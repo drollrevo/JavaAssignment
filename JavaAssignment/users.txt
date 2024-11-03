@@ -1,0 +1,5 @@
+1,ad,adminpass,FM,true
+1,adas,adminpass,FM,true
+1,tria,password1,User,true
+2,bob,password2,FM,true
+1,q,w,FM,true
