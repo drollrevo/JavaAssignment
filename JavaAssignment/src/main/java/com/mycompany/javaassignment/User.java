@@ -3,10 +3,10 @@ package com.mycompany.javaassignment;
 import java.io.*;
 //All possible role options
 enum Role {
-    FM, User
+    FM, Admin
 }
 
-public class User {
+public abstract class User {
     private int userId;
     private String username;
     private String password;
@@ -18,92 +18,88 @@ public class User {
     //Constructor
     public User(int userId, String username, String password, Role role) {
         
-        if (usernameTaken(username) == true) {//No same username
-            System.out.println("Username already exists. Please choose a different one.");
-            return;
-        }
+//        if (usernameTaken(username) == true) {//No same username
+//            System.out.println("Username:" + username + " already exists. Please choose a different one.");
+//            return;
+//        }
         
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.role = role;
         this.active = true;
-        saveUser();
+        //saveUser();
     }
     
-    //Register a new user
-    public static void register(int userId, String username, String password, Role role) {
-       new User(userId, username, password, role); 
-    }//Make like this cause when want use "usernameTaken" inside "register" got error about "static etc."
-
-    //Saving user
-    private void saveUser() {
-        try (
-            BufferedWriter writer = new BufferedWriter(new FileWriter(USERS, true))) {
-            writer.write(userId + "," + username + "," + password + "," + role + "," + active + "\n");
-            System.out.println(username + " was saved");
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+    public int getUserId() {
+        return userId;
     }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
+    //Saving user
+//    private void saveUser() {
+//        try (
+//            BufferedWriter writer = new BufferedWriter(new FileWriter(USERS, true))) {
+//            writer.write(userId + "," + username + "," + password + "," + role + "," + active + "\n");
+//            System.out.println(username + " was saved");
+//            writer.close();
+//        } catch (IOException e) {
+//            System.out.println("Error: " + e.getMessage());
+//        }
+//    }
 
     //Checks is the username exist
-    private boolean usernameTaken(String username) {
-        try (
-            BufferedReader reader = new BufferedReader(new FileReader(USERS))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] userData = line.split(",");
-                if (userData[1].equals(username)) {
-                    return true;
-                }
-            }
-            reader.close();
-        } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        return false;
-    }
-
-    //Delete or make inactive
-    public static void deactivateUser(String username) {
-    updateUserStatus(username, false);
-    System.out.println("User " + username + " is now inactive.");
-    }
-    //Reborn or make active
-    public static void activateUser(String username) {
-    updateUserStatus(username, true);
-    System.out.println("User " + username + " is now active.");
-    }
-
-    //Update user status in the file
-    private static void updateUserStatus(String username, boolean newStatus) {
-    try (
-         BufferedReader reader = new BufferedReader(new FileReader(USERS));
-         BufferedWriter writer = new BufferedWriter(new FileWriter("temp.txt"))) {
-
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] userData = line.split(",");
-            if (userData[1].equals(username)) {
-                userData[4] = String.valueOf(newStatus);  //Update active status
-                line = String.join(",", userData);        
-            }
-            writer.write(line + "\n");
-        }
-
-        //Replace old file
-        new File(USERS).delete();
-        new File("temp.txt").renameTo(new File(USERS));
-        
-        reader.close();
-        writer.close();
-
-    } catch (IOException e) {
-        System.out.println("Error: " + e.getMessage());
-    }
-    }
+//    private boolean usernameTaken(String username) {
+//        try (
+//            BufferedReader reader = new BufferedReader(new FileReader(USERS))) {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                String[] userData = line.split(",");
+//                if (userData[1].equals(username)) {
+//                    return true;
+//                }
+//            }
+//            reader.close();
+//        } catch (IOException e) {
+//            System.out.println("Error: " + e.getMessage());
+//        }
+//        return false;
+//    }
 
     //Login method
     public static void login(String username, String password) {
