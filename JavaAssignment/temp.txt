@@ -1,0 +1,11 @@
+1,ad,adminpass,FM,true
+1,adas,adminpass,FM,true
+1,tria,password1,User,true
+2,user1,2,FM,true
+1,q,w,FM,true
+2,user1,2,FM,true
+1,admin,adminPass,Admin,true
+2,user1,2,FM,true
+2,user1,2,FM,true
+3,fmuser,fm123,FM,true
+4,regularUser,regpass,Admin,true

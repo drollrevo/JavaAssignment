@@ -13,7 +13,7 @@ public abstract class User {
     private Role role;
     private boolean active;
 
-    private static final String USERS = "users.txt";  //Stores users
+    static final String USERS = "users.txt";  //Stores users
 
     //Constructor
     public User(int userId, String username, String password, Role role) {

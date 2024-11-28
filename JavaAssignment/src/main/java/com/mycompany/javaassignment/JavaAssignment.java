@@ -39,6 +39,9 @@ public static void main(String[] args) {
 
         // Register a new Regular User
         admin.register(4, "regularUser", "regpass", Role.Admin);
-    }
+    
+
+
+}
 
 }
