@@ -3,7 +3,7 @@ package com.mycompany.javaassignment;
 import java.io.*;
 //All possible role options
 enum Role {
-    FM, Admin
+    FM, Admin, PurchaseManager
 }
 
 public abstract class User {
@@ -13,7 +13,7 @@ public abstract class User {
     private Role role;
     private boolean active;
 
-    static final String USERS = "users.txt";  //Stores users
+    static final String USERS = ("C:\\Users\\Hannah\\OneDrive\\Desktop\\hannah - java assignment\\JavaAssignment\\JavaAssignment\\src\\main\\java\\com\\mycompany\\javaassignment\\users.txt");  //Stores users
 
     //Constructor
     public User(int userId, String username, String password, Role role) {
@@ -28,7 +28,7 @@ public abstract class User {
         this.password = password;
         this.role = role;
         this.active = true;
-        //saveUser();
+        saveUser();
     }
     
     public int getUserId() {
@@ -72,16 +72,16 @@ public abstract class User {
     }
     
     //Saving user
-//    private void saveUser() {
-//        try (
-//            BufferedWriter writer = new BufferedWriter(new FileWriter(USERS, true))) {
-//            writer.write(userId + "," + username + "," + password + "," + role + "," + active + "\n");
-//            System.out.println(username + " was saved");
-//            writer.close();
-//        } catch (IOException e) {
-//            System.out.println("Error: " + e.getMessage());
-//        }
-//    }
+    private void saveUser() {
+        try (
+            BufferedWriter writer = new BufferedWriter(new FileWriter(USERS, true))) {
+            writer.write(userId + "," + username + "," + password + "," + role + "," + active + "\n");
+            System.out.println(username + " was saved");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 
     //Checks is the username exist
 //    private boolean usernameTaken(String username) {

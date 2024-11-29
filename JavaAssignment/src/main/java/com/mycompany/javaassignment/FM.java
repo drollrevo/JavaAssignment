@@ -22,11 +22,14 @@ public class FM extends User {
 
     // Method to view all Purchase Orders
     public void viewPurchaseOrders() {
-        System.out.println("List of Purchase Orders:");
+    if (purchaseOrders.isEmpty()) {
+        System.out.println("No purchase orders available.");
+    } else {
         for (PurchaseOrder po : purchaseOrders) {
             System.out.println(po);
         }
     }
+}
 
     // Method to verify and approve/reject a Purchase Order
     public void verifyPurchaseOrder(String poNo, String status) {
@@ -101,12 +104,7 @@ public class FM extends User {
             }
         }
     }
-
-    // Method to add a PurchaseOrder
-//    public void addPurchaseOrder(PurchaseOrder po) {
-//        purchaseOrders.add(po);
-//    }
-
+    
     // Method to save the user (Saving functionality from the previous FM class)
     public void saveUser() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS, true))) {
@@ -116,4 +114,10 @@ public class FM extends User {
             System.out.println("Error: " + e.getMessage());
         }
     }
+    
+    public void addPurchaseOrder(PurchaseOrder po) {
+    purchaseOrders.add(po); // Adding to internal list of FM
 }
+
+    }
+
