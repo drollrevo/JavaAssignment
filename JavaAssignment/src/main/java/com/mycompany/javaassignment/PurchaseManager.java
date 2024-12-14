@@ -69,4 +69,27 @@ public class PurchaseManager extends User {
             System.out.println(po);
         }
     }
+    //Method to view all suppliers -call the statics method from the existing supplier class 
+    public void viewSuppliers(List<Supplier> supplierList) {
+        System.out.println("List of Suppliers:");
+        if (supplierList == null || supplierList.isEmpty()) {
+            System.out.println("No suppliers available.");
+        } else {
+            for (Supplier supplier : supplierList) {
+                System.out.println(supplier);
+            }
+        }
+    }
+    //Method to view all items 
+    public void viewItems(List<Item> itemList) {
+        System.out.println("List of Items:");
+        if (itemList == null || itemList.isEmpty()) {
+            System.out.println("No items available.");
+        } else {
+            for (Item item : itemList) {
+                System.out.println(item);
+            }
+        }
+    }
+   
 }

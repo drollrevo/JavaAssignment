@@ -1,5 +1,8 @@
 package com.mycompany.javaassignment;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JavaAssignment {
     public static void main(String[] args) throws IOException {
@@ -7,14 +10,35 @@ public class JavaAssignment {
          // Create instances of Users (FM and PurchaseManager)
         FM financeManager = new FM(1, "fm_user", "12345", Role.FM);
         PurchaseManager purchaseManager = new PurchaseManager(2, "pm_user", "54321", Role.PurchaseManager);
+        
+        //Create list of items
+        List<Item>itemList=new ArrayList<>();
+        itemList.add(new Item("I001", "Chocolate Bar", "SUP001", "Available", 5.00));
+        itemList.add(new Item("I002", "Chocolate Bar", "SUP002", "Available", 3.50));
+        
+        //Create list of supplier
+        List<Supplier>supplierList=new ArrayList<>();
+        supplierList.add(new Supplier("SUP001", "ABC Supplies", "Selangor", "Active", "ITM001", "Item A", 50.0));
+        supplierList.add(new Supplier("SUP002", "XYZ Supplies", "Seremban", "Active", "ITM002", "Item B", 75.0));
+        supplierList.add(new Supplier("SUP003", "123 Supplies", "Bukit Jalil", "Active", "ITM003", "Item C", 100.0));
 
+        //Display list of items
+        System.out.println("\nViewing the list of Items");
+        purchaseManager.viewItems(itemList);
+        
+        //Display list of suppliers
+        System.out.println("\nViewing the list of Suppliers");
+        purchaseManager.viewSuppliers(supplierList);
+        
         // Create some test items and suppliers
-        Item item1 = new Item("I001", "Chocolate Bar", "S001", "Available", 5.00);
-        Item item2 = new Item("I002", "Candy", "S002", "Available", 3.50);
+        Item item1 = new Item("I001", "Chocolate Bar", "SUP001", "Available", 5.00);
+        Item item2 = new Item("I002", "Candy", "SUP002", "Available", 3.50);
+        
+        //creste some test suppliers
+        Supplier supplier1 = new Supplier("SUP001", "ABC Supplies", "Selangor", "Active", "ITM001", "Item A", 50.0);
+        Supplier supplier2 = new Supplier("SUP002", "XYZ Supplies", "Seremban", "Active", "ITM002", "Item B", 75.0);
+        Supplier supplier3 = new Supplier("SUP003", "123 Supplies", "Bukit Jalil", "Active", "ITM003", "Item C", 100.0);
 
-        Supplier supplier1 = new Supplier("S001", "Sweet Supply Co.", "123 Candy Lane", "Active");
-        Supplier supplier2 = new Supplier("S002", "Sugar Co.", "456 Sugar Street", "Active");
-               
         // Create Purchase Orders
         PurchaseOrder po1 = new PurchaseOrder("PO001", item1, 100, "2024-11-01", "2024-11-05", 
                                               "2024-11-07", supplier1, "PM001", "Pending", 
@@ -57,6 +81,22 @@ public class JavaAssignment {
         // Save Purchase Orders (Testing save functionality)
         System.out.println("\nSaving Purchase Orders to file...");
         purchaseManager.savePurchaseOrders();
+        
+        // Edit supplier
+        System.out.println("\nEditing Supplier SUP001...");
+        Supplier.editSupplier("SUP001", "New ABC Supplies", "789 Maple St", "Inactive", "ITM003", "Item C", 60.0);
+
+        // Delete supplier
+        System.out.println("\nDeleting Supplier SUP002...");
+        Supplier.deleteSupplier("SUP002");
+
+        // Display suppliers
+        System.out.println("\nView supplier list:");
+        Supplier.supplierList();
+
+        // Display logs
+        System.out.println("\nDisplaying supplier logs:");
+        Supplier.displayLogs();
     }
 }
 
