@@ -13,7 +13,20 @@ public abstract class User {
     private Role role;
     private boolean active;
 
-    static final String USERS = ("C:\\Users\\Hannah\\OneDrive\\Desktop\\hannah - java assignment\\JavaAssignment\\JavaAssignment\\src\\main\\java\\com\\mycompany\\javaassignment\\users.txt");  //Stores users
+    static final String USERS = ("C:\\Users\\user\\Documents\\NetBeansProjects\\JavaAssignment\\JavaAssignment\\src\\main\\java\\com\\mycompany\\javaassignment\\users.txt");  //Stores users
+    
+    //initialize file and if the file does not existthen dynamically create it
+    static {
+    try {
+        File file = new File(USERS);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+    } catch (IOException e) {
+        System.out.println("Error initializing USERS file: " + e.getMessage());
+    }
+}
+
 
     //Constructor
     public User(int userId, String username, String password, Role role) {
@@ -72,14 +85,14 @@ public abstract class User {
     }
     
     //Saving user
-    private void saveUser() {
+    private synchronized void saveUser() {
         try (
             BufferedWriter writer = new BufferedWriter(new FileWriter(USERS, true))) {
             writer.write(userId + "," + username + "," + password + "," + role + "," + active + "\n");
             System.out.println(username + " was saved");
             writer.close();
         } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error saving user to file: " + e.getMessage());
         }
     }
 
@@ -102,7 +115,7 @@ public abstract class User {
 //    }
 
     //Login method
-    public static void login(String username, String password) {
+    public static synchronized void login(String username, String password) {
         try (
             BufferedReader reader = new BufferedReader(new FileReader(USERS))) {
             String line;
@@ -142,4 +155,5 @@ public abstract class User {
         }
         System.out.println("User not found.");
     }
+    
 }
