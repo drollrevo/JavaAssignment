@@ -12,8 +12,17 @@ public class Item {
     private String itemStatus;
     private double itemPrice;
 
-    private static final String ITEM_FILENAME = System.getProperty("user.dir") + "/src/Database/item.txt";
-    private static final String LOG_FILENAME = System.getProperty("user.dir") + "/src/Database/itemLog.txt";
+    //private static final String ITEM_FILENAME = System.getProperty("user.dir") + "/src/Database/item.txt";
+    //private static final String LOG_FILENAME = System.getProperty("user.dir") + "/src/Database/itemLog.txt";
+
+   private static final String ITEM_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/item.txt";
+   private static final String LOG_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/itemLog.txt";
+
+
+    
+    
+    
+    
 
     // Constructor
     public Item() {
