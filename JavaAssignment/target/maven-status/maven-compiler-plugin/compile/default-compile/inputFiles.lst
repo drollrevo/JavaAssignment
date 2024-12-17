@@ -1,9 +1,23 @@
-C:\Users\Hannah\OneDrive\Desktop\hannah - java assignment\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\JavaAssignment.java
-C:\Users\Hannah\OneDrive\Desktop\hannah - java assignment\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Payment.java
-C:\Users\Hannah\OneDrive\Desktop\hannah - java assignment\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\PurchaseOrder.java
-C:\Users\Hannah\OneDrive\Desktop\hannah - java assignment\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Admin.java
-C:\Users\Hannah\OneDrive\Desktop\hannah - java assignment\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\PurchaseManager.java
-C:\Users\Hannah\OneDrive\Desktop\hannah - java assignment\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\User.java
-C:\Users\Hannah\OneDrive\Desktop\hannah - java assignment\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Supplier.java
-C:\Users\Hannah\OneDrive\Desktop\hannah - java assignment\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Item.java
-C:\Users\Hannah\OneDrive\Desktop\hannah - java assignment\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\FM.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Inventory.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Item.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\UI\PRUI.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Class\PurchaseRequisition.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\UI\PRListUI.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\JavaAssignment.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\UI\AddPRUI.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\UI\AddSalesUI.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Class\Item.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Class\SalesEntry.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\UI\SalesManagerUI.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\User.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Class\CurrentTime.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\FM.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\UI\SalesEntryUI.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Class\Inventory.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Supplier.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\CurrentTime.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\SupplierEntry.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\PurchaseManager.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Admin.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Payment.java
+C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\PurchaseOrder.java

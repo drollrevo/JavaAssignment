@@ -1,0 +1,5 @@
+ItemNo: PROD-10001, ItemName: Television, Action: Added Stock, User: system, DateTime: 2024-11-28;23:09:53
+ItemNo: PROD-10002, ItemName: Vacuum, Action: Added Stock, User: system, DateTime: 2024-11-28;23:09:53
+ItemNo: PROD-10001, ItemName: Television, Action: Added Stock, User: system, DateTime: 2024-11-28;23:12:36
+ItemNo: PROD-10002, ItemName: Vacuum, Action: Added Stock, User: system, DateTime: 2024-11-28;23:12:36
+ItemNo: PROD-10003, ItemName: Panasonic Fridge, Action: Added Stock, User: system, DateTime: 2024-11-28;23:13:01
