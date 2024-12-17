@@ -45,6 +45,10 @@ public class Item {
         this.itemNo = itemNo;
     }
 
+    public String getItemName() {
+        return itemName;
+    }
+    
     public String getItemName(String itemNo) {
         this.itemName = null; // Initialize itemName as null
 
