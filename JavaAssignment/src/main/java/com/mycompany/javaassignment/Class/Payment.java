@@ -173,14 +173,12 @@ public class Payment {
     public void addPayment(String newPayment) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(PAYMENT_FILENAME, true))) {
             bw.write(newPayment + ", " + time.toDateFormat());
+            bw.newLine();
             JOptionPane.showMessageDialog(null, "You have paid successfully.");                                    
             
             bw.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error to open payment.txt");
         }
-    }
-
-    public void paymentHistory() {
     }
 }

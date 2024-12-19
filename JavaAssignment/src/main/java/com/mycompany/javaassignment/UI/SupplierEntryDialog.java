@@ -5,13 +5,17 @@ import java.io.FileWriter;
 import javax.swing.table.DefaultTableModel;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class SupplierEntryDialog extends javax.swing.JFrame {
 
     DefaultTableModel model = new DefaultTableModel();
-    private String[] colname = {"SupplierID", "SupplierName","ItemNo", "ItemName", "Address", "Nation","Price", "Status"};
+    private String[] colname = {"SupplierID", "SupplierName", "ItemNo", "ItemName", "Address", "Nation", "Price", "Status"};
     Supplier supplier = new Supplier();
-    
+    User user = new User() {
+    };
+
     private int count = 0;
     private static final String SUPPLIER_FILE = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/supplier.txt";
 
@@ -19,13 +23,37 @@ public class SupplierEntryDialog extends javax.swing.JFrame {
         model.setColumnIdentifiers(colname);
         initComponents();
         setLocationRelativeTo(null);//to center the dialog
-        
+
         jTextField1.setEditable(false);
         jTextField1.setFocusable(false);
-        tableUI();
+        jTextField6.setEditable(false);
+        jTextField6.setFocusable(false);
 
-        // Add a listener to pre-fill fields when a row is selected
-        //jTable1.getSelectionModel().addListSelectionListener(e -> fillFieldsFromSelectedRow());
+        if (user.getCurrentUserRole().equals("PM")) {
+            jButton1.setVisible(false);
+            jButton2.setVisible(false);
+            jButton3.setVisible(false);
+            jButton4.setVisible(false);
+            jButton5.setVisible(false);
+            jButton7.setVisible(false);
+            jTextField2.setEditable(false);
+            jTextField2.setFocusable(false);
+            jTextField3.setEditable(false);
+            jTextField3.setFocusable(false);
+            jTextField4.setEditable(false);
+            jTextField4.setFocusable(false);
+            jTextField5.setEditable(false);
+            jTextField5.setFocusable(false);
+            jComboBox1.setEditable(false);
+            jComboBox1.setFocusable(false);
+            jComboBox2.setEditable(false);
+            jComboBox2.setFocusable(false);
+
+            jComboBox1.setEnabled(false);
+            jComboBox2.setEnabled(false);
+        }
+
+        tableUI();
     }
 
     /**
@@ -96,7 +124,7 @@ public class SupplierEntryDialog extends javax.swing.JFrame {
 
         jLabel4.setText("Supplier Status");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVE", "INACTIVE" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -181,7 +209,7 @@ public class SupplierEntryDialog extends javax.swing.JFrame {
 
         jLabel10.setText("Nation");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "JHR", "KDH", "KTN", "MLK", "JHR", " NSN", "PHG", "PNG", "PRK", "PLS", "SBH", "SWK", "SGR", "TRG", "KUL", "LBN", "PJY", "OVS", " " }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "JHR", "KDH", "KTN", "MLK", "JHR", "NSN", "PHG", "PNG", "PRK", "PLS", "SBH", "SWK", "SGR", "TRG", "KUL", "LBN", "PJY", "OVS" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -343,92 +371,59 @@ public class SupplierEntryDialog extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // Get form input
         String supplierId = jTextField1.getText();
-        String itemId = jTextField2.getText();
+        String itemNo = jTextField2.getText();
         String itemName = jTextField6.getText();
-        String status = (String) jComboBox1.getSelectedItem();
+        String status = jComboBox1.getSelectedItem().toString();
         String address = jTextField3.getText();
-        String price = jTextField4.getText();
+        String nation = jComboBox2.getSelectedItem().toString();
+        double price = Double.parseDouble(jTextField4.getText());
         String supplierName = jTextField5.getText();
-        
 
         //Validate input
-        if (supplierId.isEmpty() || itemId.isEmpty() || price.isEmpty()) {
+        if (supplierId.isEmpty() || supplierName.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || address.isEmpty() || nation.isEmpty() || status.isEmpty() || price <= 0) {
             JOptionPane.showMessageDialog(this, "Please fill in all required fields!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
+        } else {
+            if (supplier.createSupplier(supplierId, supplierName, itemNo, itemName, address, nation, price, status)) {
+                clearFormFields();
+                model.addRow(new Object[]{supplierId, supplierName, itemNo, itemName, address, nation, price, status});
+            }
+
         }
-        //Add new row to the table
-
-        //Clear form field
-        clearFormFields();
-        
-        // Save to file
-//        Supplier.saveSuppliersToFile();
-
-        //Comfirmation message
-        JOptionPane.showMessageDialog(this, "Item saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-//         saveToFile(); // Save data to file after adding
-        model.addRow(new Object[]{supplierId,supplierName,address,status,itemId, itemName,price});
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 ////////////        // TODO add your handling code here:
 // Get the selected row index
-    int selectedRow = jTable1.getSelectedRow();
+        int selectedRow = jTable1.getSelectedRow();
 
-    // Check if a row is selected
-    if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(this, "Data not selected, please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    try {
-        // Confirm deletion
-        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to delete it?", "Delete Confirmation", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
-            // Get the Supplier ID from the selected row
-            String supplierNo = model.getValueAt(selectedRow, 0).toString();
-
-            // Delete the supplier from supplierList
-            Supplier.deleteSupplier(supplierNo);
-
-            // Remove the selected row from the table
-            model.removeRow(selectedRow);
-
-            // Notify success
-            JOptionPane.showMessageDialog(this, "Row deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        // Check if a row is selected
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Data not selected, please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error deleting supplier: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
 
+        try {
+            // Confirm deletion
+            if (JOptionPane.showConfirmDialog(this, "Are you sure you want to delete it?", "Delete Confirmation", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                // Get the Supplier ID from the selected row
+                String supplierNo = model.getValueAt(selectedRow, 0).toString();
+                String itemNo = model.getValueAt(selectedRow, 2).toString();
 
-//        int selectedRow = -1;
-//        selectedRow = jTable1.getSelectedRow();
-//
-//        if (selectedRow == -1) {
-//            JOptionPane.showMessageDialog(null, "Data not selected, please select a row to delete.");
-//        } else {
-//            if (JOptionPane.showConfirmDialog(this, "Are you sure you want to delete it?", "Delete Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
-//                String supplierNo = String.valueOf(model.getValueAt(selectedRow, 0));
-//                supplier.deleteSupplier(supplierNo);
-//            }
-//        }
-//
-//        if (selectedRow >= 0) {
-//            model.removeRow(selectedRow);
-//            saveToFile(); // Save data to file after deletion
-//            JOptionPane.showMessageDialog(this, "Row deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-//        } else {
-//            JOptionPane.showMessageDialog(this, "Please select a row to delete,", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
+                // Delete the supplier from supplierList
+                supplier.deleteSupplier(supplierNo, itemNo);
+
+                // Remove the selected row from the table
+                model.removeRow(selectedRow);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error deleting supplier: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        
-        
         // Clear all form fields
         clearFormFields();
 
@@ -443,7 +438,8 @@ public class SupplierEntryDialog extends javax.swing.JFrame {
         String supplierStatus = String.valueOf(jComboBox1.getSelectedItem());
         String address = jTextField3.getText();
         String supplierName = jTextField5.getText();
-        
+        String nation = String.valueOf(jComboBox2.getSelectedItem());
+
         if (itemNo.isEmpty() || itemName.isEmpty() || supplierID.isEmpty() || supplierStatus.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Invalid data.");
         } else {
@@ -451,7 +447,7 @@ public class SupplierEntryDialog extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Invalid Price");
             } else {
                 if (JOptionPane.showConfirmDialog(this, "Are you sure to edit the data?", "Edit Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
-                    supplier.editSupplier(supplierID,supplierName,supplierStatus, address,itemNo,itemName,price);
+                    supplier.editSupplier(supplierID, supplierName, itemNo, itemName, address, nation, String.format("%.2f", price), supplierStatus);
                 }
             }
         }
@@ -461,17 +457,17 @@ public class SupplierEntryDialog extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setValueAt(jTextField1.getText(), selectedRow, 0); // Supplier ID
             model.setValueAt(jTextField5.getText(), selectedRow, 1); // Supplier Name
-            model.setValueAt(jTextField2.getText(), selectedRow, 4); // Item ID
-            model.setValueAt(jTextField6.getText(), selectedRow, 5); // Item Name
-            model.setValueAt(jComboBox1.getSelectedItem(), selectedRow, 3); // Item Status
-            model.setValueAt(jTextField3.getText(), selectedRow, 2); // Address
+            model.setValueAt(jTextField2.getText(), selectedRow, 2); // Item ID
+            model.setValueAt(jTextField6.getText(), selectedRow, 3); // Item Name
+            model.setValueAt(jComboBox1.getSelectedItem(), selectedRow, 7); // Item Status
+            model.setValueAt(jTextField3.getText(), selectedRow, 4); // Address
             model.setValueAt(jTextField4.getText(), selectedRow, 6); // Price
+            model.setValueAt(jComboBox1.getSelectedItem(), selectedRow, 5); // Item Status
 
 //            saveToFile(); // Save data to file after update
             clearFormFields();
-            
-//            Supplier.saveSuppliersToFile();
 
+//            Supplier.saveSuppliersToFile();
             JOptionPane.showMessageDialog(this, "Supplier updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
         } else {
@@ -488,13 +484,18 @@ public class SupplierEntryDialog extends javax.swing.JFrame {
         jComboBox1.setSelectedIndex(0); // Reset Item Status to default
         jTextField3.setText(""); // Address
         jTextField4.setText(""); // Price
+        jComboBox2.setSelectedIndex(0);
     }
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-        InventoryManagerUI inventoryManagerUI = new InventoryManagerUI();
-        inventoryManagerUI.setVisible(true);
-        this.dispose();
+        if (user.getCurrentUserRole().equals("PM")) {
+            new PurchaseManagerUI().setVisible(true);
+            this.dispose();
+        } else {
+            InventoryManagerUI inventoryManagerUI = new InventoryManagerUI();
+            inventoryManagerUI.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
@@ -513,48 +514,66 @@ public class SupplierEntryDialog extends javax.swing.JFrame {
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow >= 0) {
             // Correct column indices based on the defined table model
-            jTextField1.setText(jTable1.getValueAt(selectedRow, 0).toString()); // SupplierID
-             jTextField5.setText(jTable1.getValueAt(selectedRow, 1).toString()); // Supplier Name
+            jTextField1.setText(model.getValueAt(selectedRow, 0).toString()); // SupplierID
+            jTextField5.setText(model.getValueAt(selectedRow, 1).toString()); // Supplier Name
+            jTextField2.setText(model.getValueAt(selectedRow, 2).toString()); // ItemNo
+            jTextField6.setText(model.getValueAt(selectedRow, 3).toString()); // ItemName
+            jTextField3.setText(model.getValueAt(selectedRow, 4).toString()); //  Address
+            jComboBox2.setSelectedItem(model.getValueAt(selectedRow, 5).toString()); // Nation                        
+            jTextField4.setText(model.getValueAt(selectedRow, 6).toString()); // Price
+            jComboBox1.setSelectedItem(model.getValueAt(selectedRow, 7).toString()); // SupplierStatus    
 
-            jTextField3.setText(jTable1.getValueAt(selectedRow, 2).toString()); // Address
-            System.out.println(count + (String) jTable1.getValueAt(selectedRow, 1));
-            count++;
-            jComboBox1.setSelectedItem((String) jTable1.getValueAt(selectedRow, 3)); // SupplierStatus
-            // For JComboBox, ensure safe setting as well
-//        Object statusValue = jTable1.getValueAt(selectedRow, 1);
-//        jComboBox1.setSelectedItem(statusValue != null ? statusValue.toString() : "");
-
-            jTextField2.setText(jTable1.getValueAt(selectedRow, 4).toString()); // ItemNo
-            jTextField6.setText(jTable1.getValueAt(selectedRow, 5).toString()); // ItemName
-            jTextField4.setText(jTable1.getValueAt(selectedRow, 6).toString()); // Price
         }
     }//GEN-LAST:event_jTable1MouseReleased
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+        String nation = String.valueOf(jComboBox2.getSelectedItem());
+
+        if (!nation.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Remember to choose nation first.");
+            jTextField2.setText("");
+            jTextField3.setText("");
+            jTextField4.setText("");
+            jTextField5.setText("");
+            jTextField6.setText("");
+            jComboBox1.setSelectedIndex(0);
+
+            jTextField1.setText(supplier.newSupID(nation));
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a correct nation first.");
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        Item item = new Item();
+
+        String itemNo = jTextField2.getText();
+        String itemName = item.getItemName(itemNo);
+
+        if (itemName != null) {
+            jTextField6.setText(itemName);
+        } else {
+            JOptionPane.showMessageDialog(null, "Invalid Item No.");
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void tableUI() {
         model.setRowCount(0); // Clear the table before populating it
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        List<Supplier> supplierList = new Supplier().supplierList; // Load items
+        List<Supplier> supplierList = new Supplier().supplierList(); // Load items
 
         if (supplierList != null && !supplierList.isEmpty()) {
-            
-            for ( Supplier entry: supplierList) {
+
+            for (Supplier entry : supplierList) {
                 model.addRow(new Object[]{
                     entry.getSupplierID(), // SupplierID
                     entry.getSupplierName(), // SupplierID
-                    entry.getAddress(),
-                    entry.getSupplierStatus(), // SupplierStatus
                     entry.getItemNo(), // ItemNo
                     entry.getItemName(), // SupplierName (Placeholder for now)
+                    entry.getAddress(),
+                    entry.getNation(), // SupplierStatus
                     entry.getPrice(), // Price
-                    
+                    entry.getSupplierStatus()
                 });
             }
             jTable1.setModel(model); // Set the updated model to the table
@@ -563,7 +582,7 @@ public class SupplierEntryDialog extends javax.swing.JFrame {
         }
 
     }
-   
+
     /**
      * @param args the command line arguments
      */

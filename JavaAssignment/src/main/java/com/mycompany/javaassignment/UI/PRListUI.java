@@ -3,21 +3,25 @@ package com.mycompany.javaassignment.UI;
 import javax.swing.table.*;
 import java.util.*;
 import com.mycompany.javaassignment.Class.*;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.*;
 
 public class PRListUI extends javax.swing.JFrame {
 
     private DefaultTableModel model = new DefaultTableModel();
-    private String[] colName = {"prNo.", "ItemNo.", "ItemName", "SupplierID", "Quantity", "Reason", "Description", "DateRequested", "DateIssued", "UserRequested", "PersonInCharge", "Status"};
+    private String[] colName = {"PRNo.", "ItemNo.", "ItemName", "SupplierID", "Quantity", "Reason", "Description", "DateRequested", "DateIssued", "UserRequested", "PersonInCharge", "Status"};
 
+    Supplier sup = new Supplier();
     PurchaseRequisition pr = new PurchaseRequisition();
-    User user = new User(){};
-    
+    User user = new User() {
+    };
+
     public PRListUI() {
         model.setColumnIdentifiers(colName);
         initComponents();
         valueChangeReason();
+
         tableUI();
         jTextField1.setEditable(false);
         jTextField3.setEditable(false);
@@ -220,8 +224,6 @@ public class PRListUI extends javax.swing.JFrame {
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Out of Stock", "Insufficient Stock", "Scheduled Re-stock", "Others" }));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SUP-KUL-001", "SUP-KUL-002", "SUP-JHR-001", "SUP-PHG-001", " " }));
-
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton4.setText("BACK");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -413,6 +415,9 @@ public class PRListUI extends javax.swing.JFrame {
         String personInCharge = String.valueOf(model.getValueAt(row, 10));
         String status = String.valueOf(model.getValueAt(row, 11));
 
+        String[] supplierID = sup.getSupplierID(itemNo);
+        jComboBox3.setModel(new DefaultComboBoxModel<>(supplierID));
+
         jTextField1.setText(prNo);
         jTextField2.setText(itemNo);
         jTextField3.setText(itemName);
@@ -439,16 +444,21 @@ public class PRListUI extends javax.swing.JFrame {
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         int row = -1;
         row = PRList.getSelectedRow();
+        String status = jTextField13.getText();
 
         if (row == -1) {
             JOptionPane.showMessageDialog(null, "Data not selected, please select a row to delete.");
         } else {
-            if (JOptionPane.showConfirmDialog(this, "Are you sure you want to delete it?", "Delete Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
-                String prNo = String.valueOf(model.getValueAt(row, 0));
-                pr.deletePR(prNo);
-                clean();
-                cleanTF();
-                tableUI();
+            if (status.equals("Waiting to Review")) {
+                if (JOptionPane.showConfirmDialog(this, "Are you sure you want to delete it?", "Delete Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
+                    String prNo = String.valueOf(model.getValueAt(row, 0));
+                    pr.deletePR(prNo);
+                    clean();
+                    cleanTF();
+                    tableUI();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "The PR is processing, delete is not allowed.");
             }
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
@@ -471,24 +481,29 @@ public class PRListUI extends javax.swing.JFrame {
             desc = "NA";
         }
 
-        if ((status.equals("Waiting to Review"))) {
-            if (prNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || reason.isEmpty() || desc.isEmpty() || dateRequested.isEmpty() || dateIssued.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Invalid data.");
-            } else {
-                if (qty <= 0) {
-                    JOptionPane.showMessageDialog(null, "Invalid Quantity");
+        if (status.equals("Waiting to Review")) {
+            if ((status.equals("Waiting to Review"))) {
+                if (prNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || reason.isEmpty() || desc.isEmpty() || dateRequested.isEmpty() || dateIssued.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Invalid data.");
                 } else {
-                    if (JOptionPane.showConfirmDialog(this, "Are you sure to edit the data?", "Edit Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
-                        pr.editPR(prNo, itemNo, itemName, supplier, qty, reason, desc, dateRequested, dateIssued, userRequested, pic, status);
+                    if (qty <= 0) {
+                        JOptionPane.showMessageDialog(null, "Invalid Quantity");
+                    } else {
+                        if (JOptionPane.showConfirmDialog(this, "Are you sure to edit the data?", "Edit Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
+                            pr.editPR(prNo, itemNo, itemName, supplier, qty, reason, desc, dateRequested, dateIssued, userRequested, pic, status);
 
-                        clean();
-                        tableUI();
+                            clean();
+                            tableUI();
+                        }
                     }
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "PO generated for this PO, unable to edit it.");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "PO generated for this PO, unable to edit it.");
+            JOptionPane.showMessageDialog(null, "The PR is processing, unable to edit again.");
         }
+
     }//GEN-LAST:event_jButtonEditActionPerformed
 
     private void jButtonVerifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerifyActionPerformed
@@ -496,9 +511,11 @@ public class PRListUI extends javax.swing.JFrame {
 
         String itemNo = jTextField2.getText();
         String itemName = item.getItemName(itemNo);
+        String[] supplierID = sup.getSupplierID(itemNo);
 
         if (itemName != null) {
             jTextField3.setText(itemName);
+            jComboBox1.setModel(new DefaultComboBoxModel<>(supplierID));
         } else {
             JOptionPane.showMessageDialog(null, "Invalid Item No.");
         }

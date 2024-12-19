@@ -13,7 +13,7 @@ public class PurchaseOrder {
     private int qty;
     private double unitPrice;
     private double totalPrice;
-    private String estReceiveDate;
+    private String receivedDate;
     private String dateRequest;
     private String dateApproved;
     private String userRequested;
@@ -29,7 +29,7 @@ public class PurchaseOrder {
     public PurchaseOrder() {
     }
 
-    public PurchaseOrder(String poNo, String itemNo, String itemName, String supplier, int qty, double unitPrice, double totalPrice, String estReceiveDate, String dateRequest, String dateApproved, String userRequested, String pic, String status) {
+    public PurchaseOrder(String poNo, String itemNo, String itemName, String supplier, int qty, double unitPrice, double totalPrice, String receivedDate, String dateRequest, String dateApproved, String userRequested, String pic, String status) {
         this.poNo = poNo;
         this.itemNo = itemNo;
         this.itemName = itemName;
@@ -37,7 +37,7 @@ public class PurchaseOrder {
         this.qty = qty;
         this.unitPrice = unitPrice;
         this.totalPrice = totalPrice;
-        this.estReceiveDate = estReceiveDate;
+        this.receivedDate = receivedDate;
         this.dateRequest = dateRequest;
         this.dateApproved = dateApproved;
         this.userRequested = userRequested;
@@ -102,12 +102,76 @@ public class PurchaseOrder {
         this.totalPrice = totalPrice;
     }
 
-    public String getEstReceiveDate() {
-        return estReceiveDate;
+    public String getReceivedDate() {
+        return receivedDate;
     }
 
-    public void setEstReceiveDate(String estReceiveDate) {
-        this.estReceiveDate = estReceiveDate;
+    public void setReceivedDate(String receivedDate) {
+        this.receivedDate = receivedDate;
+    }
+
+    public void setReceivedDate(String poNo, String receivedDate) {
+
+        File poFile = new File(PO_FILENAME);
+        boolean entryFound = false;
+        String updatedLine = null;
+        List<String> lines = new ArrayList<>(); // To hold all lines
+
+        // Read the file content
+        try (BufferedReader br = new BufferedReader(new FileReader(poFile))) {
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 13 && parts[0].trim().equals(poNo)) {
+                    // If the poNo matches, edit the line
+                    entryFound = true;
+
+                    // Create the updated line with new values
+                    updatedLine = String.join(", ",
+                            new String[]{poNo, parts[1].trim(), parts[2].trim(), parts[3].trim(),
+                                parts[4].trim(), parts[5].trim(), parts[6].trim(), receivedDate,
+                                parts[8].trim(), parts[9].trim(), parts[10].trim(), parts[11].trim(), parts[12].trim()});
+
+                    // Add the updated line to the list
+                    lines.add(updatedLine);
+
+                    // Log the change before adding to the list
+                    try (BufferedWriter logBw = new BufferedWriter(new FileWriter(PO_LOG_FILENAME, true))) {
+                        logBw.write("Edited PO: " + line + " -> " + updatedLine + " | Timestamp: " + time.toDateTimeFormat());
+                        logBw.newLine();
+                        logBw.close();
+                    } catch (IOException logException) {
+                        JOptionPane.showMessageDialog(null, "Error logging edited purchase order.");
+                    }
+                } else {
+                    // Add the unchanged line to the list
+                    lines.add(line);
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error processing PurchaseOrder.txt.");
+            return;
+        }
+
+        // If entry was found, write all the lines back to the file
+        if (entryFound) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(poFile))) {
+                // Write all lines back to the file
+                for (String line : lines) {
+                    bw.write(line);
+                    bw.newLine();
+                }
+                JOptionPane.showMessageDialog(null, "Received Date updated successfully.");
+
+                bw.close();
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error writing to PurchaseOrder.txt.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Purchase order not found.");
+        }
     }
 
     public String getDateRequest() {
@@ -175,7 +239,7 @@ public class PurchaseOrder {
                     int qty = Integer.parseInt(parts[4].trim());
                     double unitPrice = Double.parseDouble(parts[5].trim());
                     double totalPrice = Double.parseDouble(parts[6].trim());
-                    String estReceiveDate = parts[7].trim();
+                    String receivedDate = parts[7].trim();
                     String dateRequest = parts[8].trim();
                     String dateApproved = parts[9].trim();
                     String userRequest = parts[10].trim();
@@ -183,7 +247,7 @@ public class PurchaseOrder {
                     String status = parts[12].trim();
 
                     // Create a PurchaseOrder object and add it to the list
-                    poEntries.add(new PurchaseOrder(poNo, itemNo, itemName, supplier, qty, unitPrice, totalPrice, estReceiveDate, dateRequest, dateApproved, userRequest, pic, status));
+                    poEntries.add(new PurchaseOrder(poNo, itemNo, itemName, supplier, qty, unitPrice, totalPrice, receivedDate, dateRequest, dateApproved, userRequest, pic, status));
                 }
             }
 
@@ -243,7 +307,7 @@ public class PurchaseOrder {
                     // Create the updated line with new values
                     updatedLine = String.join(", ",
                             new String[]{poNo, parts[1].trim(), parts[2].trim(), parts[3].trim(),
-                                parts[4].trim(),parts[5].trim(),parts[6].trim(),parts[7].trim(), 
+                                parts[4].trim(), parts[5].trim(), parts[6].trim(), parts[7].trim(),
                                 parts[8].trim(), parts[9].trim(), parts[10].trim(), parts[11].trim(), status});
 
                     // Add the updated line to the list
@@ -288,7 +352,7 @@ public class PurchaseOrder {
     }
 
     // Method to edit an existing Purchase Order's status and other fields
-    public void editPurchaseOrder(String poNo, String itemNo, String itemName, String supplier, int qty, double unitPrice, double totalPrice, String estReceiveDate, String dateRequested, String dateApproved, String userRequested, String pic, String status) {
+    public void editPurchaseOrder(String poNo, String itemNo, String itemName, String supplier, int qty, double unitPrice, double totalPrice, String receivedDate, String dateRequested, String dateApproved, String userRequested, String pic, String status) {
         File poFile = new File(PO_FILENAME);
         boolean entryFound = false;
         String updatedLine = null;
@@ -310,7 +374,7 @@ public class PurchaseOrder {
                                 String.format("%d", qty),
                                 String.format("%.2f", unitPrice),
                                 String.format("%.2f", totalPrice),
-                                estReceiveDate, dateRequested, dateApproved, userRequested, pic, status});
+                                receivedDate, dateRequested, dateApproved, userRequested, pic, status});
 
                     // Add the updated line to the list
                     lines.add(updatedLine);

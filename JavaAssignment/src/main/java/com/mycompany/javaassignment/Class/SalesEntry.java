@@ -15,6 +15,7 @@ public class SalesEntry extends JFrame {
     private static final String SALES_LOG_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\SalesEntryLog.txt";
 
     CurrentTime time = new CurrentTime();
+    Inventory inv = new Inventory();
 
     // Constructors
     public SalesEntry() {
@@ -44,11 +45,79 @@ public class SalesEntry extends JFrame {
         return itemNo;
     }
 
+    public String getItemNo(String salesEntryNo) {
+        this.itemNo = "";
+
+        try {
+            FileReader fr = new FileReader(SALES_FILENAME);
+            BufferedReader br = new BufferedReader(fr);
+
+            String line;
+
+            br.readLine();
+            // Read each line from the file            
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(","); // Assuming CSV format: itemNo,itemName,...
+
+                String currentSalesEntryNo = parts[0].trim();
+                String currentItemNo = parts[1].trim();
+
+                // Check if the itemNo matches the current line's itemNo and itemStatus not inactive
+                if (currentSalesEntryNo.equals(salesEntryNo)) {
+                    itemNo = currentItemNo; // Set the itemName if itemNo matches
+                    break; // No need to continue searching after finding the item
+                }
+            }
+
+            fr.close();
+            br.close();
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "item.txt not found.");
+        }
+
+        return itemNo;
+    }
+
     public void setItemNo(String itemNo) {
         this.itemNo = itemNo;
     }
 
     public String getItemName() {
+        return itemName;
+    }
+
+    public String getItemName(String salesEntryNo) {
+        this.itemName = "";
+
+        try {
+            FileReader fr = new FileReader(SALES_FILENAME);
+            BufferedReader br = new BufferedReader(fr);
+
+            String line;
+
+            br.readLine();
+            // Read each line from the file            
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(","); // Assuming CSV format: itemNo,itemName,...
+
+                String currentSalesEntryNo = parts[0].trim();
+                String currentItemName = parts[2].trim();
+
+                // Check if the itemNo matches the current line's itemNo and itemStatus not inactive
+                if (currentSalesEntryNo.equals(salesEntryNo)) {
+                    itemName = currentItemName; // Set the itemName if itemNo matches
+                    break; // No need to continue searching after finding the item
+                }
+            }
+
+            fr.close();
+            br.close();
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "item.txt not found.");
+        }
+
         return itemName;
     }
 
@@ -73,6 +142,38 @@ public class SalesEntry extends JFrame {
     }
 
     public int getQty() {
+        return qty;
+    }
+
+    public int getQty(String salesEntryNo) {
+        this.qty = 0;
+
+        try {
+            FileReader fr = new FileReader(SALES_FILENAME);
+            BufferedReader br = new BufferedReader(fr);
+
+            String line;
+            // Read each line from the file            
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(","); // Assuming CSV format: itemNo,itemName,...
+                String currentSalesEntryNo = parts[0].trim();
+                int currentQtyAvailable = Integer.parseInt(parts[4].trim());
+                System.out.println(currentSalesEntryNo + " / " + salesEntryNo + " / " + parts[4]);
+                
+                // Check if the itemNo matches the current line's itemNo and itemStatus not inactive
+                if (currentSalesEntryNo.equals(salesEntryNo)) {
+                    qty = currentQtyAvailable; // Set the itemName if itemNo matches
+                    break; // No need to continue searching after finding the item
+                }
+            }
+
+            fr.close();
+            br.close();
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "item.txt not found.");
+        }
+
         return qty;
     }
 
@@ -130,27 +231,29 @@ public class SalesEntry extends JFrame {
         return salesEntries;
     }
 
-    public void createSalesEntry(String newRow) {
+    public void createSalesEntry(String newRow, String itemNo, String itemName, int qty) {
         String currentDate = time.toDateTimeFormat();
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(SALES_FILENAME, true))) {
-            bw.write(newRow);
-            bw.newLine(); // Add a new line after the entry            
+        if (inv.reduceStock(itemNo, itemName, -qty, "SA")) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(SALES_FILENAME, true))) {
+                bw.write(newRow);
+                bw.newLine(); // Add a new line after the entry            
+                bw.close();
 
-            bw.close();
+                JOptionPane.showMessageDialog(null, "SalesEntry added Successfully.");
+                // Log the new sales entry creation with the date in the salesEntryLog.txt file
+                try (BufferedWriter logbw = new BufferedWriter(new FileWriter(SALES_LOG_FILENAME, true))) {
+                    logbw.write("New SalesEntry Created: " + newRow + ", " + currentDate);
+                    logbw.newLine(); // Add a new line after the log entry      
 
-            // Log the new sales entry creation with the date in the salesEntryLog.txt file
-            try (BufferedWriter logbw = new BufferedWriter(new FileWriter(SALES_LOG_FILENAME, true))) {
-                logbw.write("New SalesEntry Created: " + newRow + ", " + currentDate);
-                logbw.newLine(); // Add a new line after the log entry      
+                    logbw.close();
+                } catch (IOException logException) {
+                    JOptionPane.showMessageDialog(null, "Error writing to sales entry log file: " + logException.getMessage());
+                }
 
-                logbw.close();
-            } catch (IOException logException) {
-                JOptionPane.showMessageDialog(null, "Error writing to sales entry log file: " + logException.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error writing to sales entry file: " + e.getMessage());
             }
-
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error writing to sales entry file: " + e.getMessage());
         }
     }
 
@@ -159,17 +262,21 @@ public class SalesEntry extends JFrame {
 
         try (BufferedReader br = new BufferedReader(new FileReader(SALES_FILENAME))) {
             String line;
+            String prefix = "ST-" + time.getDateFormat();
+
+            newSENo = prefix + "001";
+
             while ((line = br.readLine()) != null) {
-                if (line.startsWith("ST-")) {
-                    String prefix = "ST-" + time.getDateFormat();
-                    if (line.startsWith(prefix)) {
-                        // Extract the last three digits
-                        newSENo = prefix + String.format("%03d", (Integer.parseInt(line.substring(line.length() - 3)) + 1));
-                    } else {
-                        newSENo = prefix + "001";
+                String[] parts = line.split(",");
+                if (parts[0].startsWith("ST-")) {
+                    if (parts[0].startsWith(prefix)) {
+                        // Extract the last three digits                        
+                        newSENo = prefix + String.format("%03d", (Integer.parseInt(parts[0].substring(parts[0].length() - 3)) + 1));
                     }
                 }
             }
+
+            return newSENo;
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading salesEntry.txt: " + e.getMessage());
         }
@@ -182,6 +289,7 @@ public class SalesEntry extends JFrame {
         boolean entryFound = false;
         String updatedLine = null;
         List<String> lines = new ArrayList<>(); // To hold all lines
+        int dec = 0;
 
         // Read the file content
         try (BufferedReader br = new BufferedReader(new FileReader(salesFile))) {
@@ -195,6 +303,11 @@ public class SalesEntry extends JFrame {
 
                     // Create the updated line with new values
                     updatedLine = salesEntryNo + "," + itemNo + "," + itemName + "," + price + "," + qty + "," + amount + "," + date + "," + user;
+
+                    System.out.println("Halo1" + getQty(salesEntryNo));
+                    System.out.println("Halo2" + qty);
+                    System.out.println("Halo3" + getQty(salesEntryNo) + qty);
+                    inv.reduceStock(itemNo, itemName, (qty - getQty(salesEntryNo)), "SA");
 
                     // Add the updated line to the list
                     lines.add(updatedLine);
@@ -248,9 +361,10 @@ public class SalesEntry extends JFrame {
                 if (parts.length == 8 && parts[0].trim().equals(salesEntryNo)) {
                     // If the salesEntryNo matches, mark it as found and log the deletion
                     entryFound = true;
+                    inv.reduceStock(getItemNo(salesEntryNo), getItemName(salesEntryNo), getQty(salesEntryNo), "SA");
 
                     try (BufferedWriter logBw = new BufferedWriter(new FileWriter(SALES_LOG_FILENAME, true))) {
-                        logBw.write("Deleted Entry: " + line + " | Timestamp: " + new java.util.Date());
+                        logBw.write("Deleted Entry: " + line + " | Timestamp: " + time.toDateTimeFormat());
                         logBw.newLine();
 
                         logBw.close();

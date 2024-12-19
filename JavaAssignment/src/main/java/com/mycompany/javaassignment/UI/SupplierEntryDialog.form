@@ -292,8 +292,8 @@
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="2">
-            <StringItem index="0" value="Active"/>
-            <StringItem index="1" value="Inactive"/>
+            <StringItem index="0" value="ACTIVE"/>
+            <StringItem index="1" value="INACTIVE"/>
           </StringArray>
         </Property>
       </Properties>
@@ -420,13 +420,13 @@
     <Component class="javax.swing.JComboBox" name="jComboBox2">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="19">
+          <StringArray count="18">
             <StringItem index="0" value="JHR"/>
             <StringItem index="1" value="KDH"/>
             <StringItem index="2" value="KTN"/>
             <StringItem index="3" value="MLK"/>
             <StringItem index="4" value="JHR"/>
-            <StringItem index="5" value=" NSN"/>
+            <StringItem index="5" value="NSN"/>
             <StringItem index="6" value="PHG"/>
             <StringItem index="7" value="PNG"/>
             <StringItem index="8" value="PRK"/>
@@ -439,7 +439,6 @@
             <StringItem index="15" value="LBN"/>
             <StringItem index="16" value="PJY"/>
             <StringItem index="17" value="OVS"/>
-            <StringItem index="18" value=" "/>
           </StringArray>
         </Property>
       </Properties>

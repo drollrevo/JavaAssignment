@@ -6,16 +6,18 @@ import javax.swing.table.DefaultTableModel;
 import com.mycompany.javaassignment.Class.*;
 import java.util.*;
 
-public class ItemEnrtyDialog extends javax.swing.JFrame {
+public class ItemEntryDialog extends javax.swing.JFrame {
 
     InventoryManagerUI inventoryManagerUI = new InventoryManagerUI();
     DefaultTableModel model = new DefaultTableModel();
     private String[] colname = {"ItemNo", "ItemName", "Price", "Status"};
     Item item = new Item();
+    User user = new User() {
+    };
 
     private static final String ITEM_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/item.txt";
 
-    public ItemEnrtyDialog() {
+    public ItemEntryDialog() {
         model.setColumnIdentifiers(colname);
         initComponents();
         setLocationRelativeTo(null);
@@ -23,6 +25,21 @@ public class ItemEnrtyDialog extends javax.swing.JFrame {
         jTextField1.setEditable(false);
         jTextField1.setFocusable(false);
         tableUI();
+
+        if (user.getCurrentUserRole().equals("PM")) {
+            jButton1.setVisible(false);
+            jButton2.setVisible(false);
+            jButton3.setVisible(false);
+            jButton4.setVisible(false);
+            jButton5.setVisible(false);
+            jTextField2.setEditable(false);
+            jTextField2.setFocusable(false);
+            jTextField3.setEditable(false);
+            jTextField3.setFocusable(false);
+            jComboBox1.setEditable(false);
+            jComboBox1.setFocusable(false);
+            jComboBox1.setEnabled(false);
+        }
     }
 
     /**
@@ -246,7 +263,9 @@ public class ItemEnrtyDialog extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please fill in all fields!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } else {
-            item.addItem(itemNo, itemName, String.format("%.2f", price));
+            if (JOptionPane.showConfirmDialog(null, "Confirm to add new item.", "Add Item Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
+                item.addItem(itemNo, itemName, String.format("%.2f", price));
+            }
         }
         //Add new row to the table        
         //model.addRow(new Object[]{supplierId,itemStatus,price});
@@ -342,9 +361,14 @@ public class ItemEnrtyDialog extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:        
-        inventoryManagerUI.setVisible(true);
-        this.dispose();
+        if (user.getCurrentUserRole().equals("PM")) {
+            new PurchaseManagerUI().setVisible(true);
+            this.dispose();
+        } else {
+            new InventoryManagerUI().setVisible(true);
+            this.dispose();
+        }
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
@@ -353,6 +377,7 @@ public class ItemEnrtyDialog extends javax.swing.JFrame {
         jTextField1.setText(model.getValueAt(selectedRow, 0).toString());
         jTextField2.setText(model.getValueAt(selectedRow, 1).toString());
         jTextField3.setText(model.getValueAt(selectedRow, 2).toString());
+
         jComboBox1.setSelectedItem(model.getValueAt(selectedRow, 3).toString());
     }//GEN-LAST:event_jTable1MouseReleased
 
@@ -422,21 +447,23 @@ public class ItemEnrtyDialog extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ItemEnrtyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ItemEntryDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ItemEnrtyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ItemEntryDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ItemEnrtyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ItemEntryDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ItemEnrtyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ItemEntryDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ItemEnrtyDialog().setVisible(true);
+                new ItemEntryDialog().setVisible(true);
             }
         });
     }

@@ -4,6 +4,8 @@
  */
 package com.mycompany.javaassignment.UI;
 
+import com.mycompany.javaassignment.Class.*;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,11 +14,20 @@ import javax.swing.JOptionPane;
  */
 public class FinanceManagerUI extends javax.swing.JFrame {
 
+    User user = new User() {
+    };
+
     /**
      * Creates new form FinanceManagerUI
      */
     public FinanceManagerUI() {
         initComponents();
+
+        String roles = user.getCurrentUserRole();
+        if (roles.equals("AM")) {
+            jButton5.setText("BACK");
+            jButton5.setForeground(Color.black);
+        }
     }
 
     /**
@@ -47,6 +58,11 @@ public class FinanceManagerUI extends javax.swing.JFrame {
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton2.setText("INVENTORY");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton3.setText("PAYMENT");
@@ -128,10 +144,16 @@ public class FinanceManagerUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if (JOptionPane.showConfirmDialog(this, "Logout?", "Logout Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
+        if (user.getCurrentUserRole().equals("FM")) {
+            if (JOptionPane.showConfirmDialog(this, "Logout?", "Logout Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
+                setVisible(false);
+                new Main().setVisible(true);
+            }
+        } else if (user.getCurrentUserRole().equals("AM")) {
             setVisible(false);
-            new Main().setVisible(true);
+            new AdminUI().setVisible(true);
         }
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -143,6 +165,11 @@ public class FinanceManagerUI extends javax.swing.JFrame {
         setVisible(false);
         new PaymentHistoryUI().setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        setVisible(false);
+        new InventoryUI().setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

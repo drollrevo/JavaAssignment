@@ -17,7 +17,8 @@ public class GeneratePOUI extends javax.swing.JFrame {
     };
     Item item = new Item();
     PurchaseRequisition pr = new PurchaseRequisition();
-
+    Inventory inv = new Inventory();
+    
     public GeneratePOUI() {
         model.setColumnIdentifiers(colName);
         initComponents();
@@ -460,7 +461,7 @@ public class GeneratePOUI extends javax.swing.JFrame {
                                 String.valueOf(qty),
                                 String.format("%.2f", unitPrice),
                                 String.format("%.2f", totalPrice),
-                                "30Days",
+                                "-",
                                 dateRequest,
                                 "-",
                                 userRequest,

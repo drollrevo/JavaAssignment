@@ -17,17 +17,29 @@ import java.io.*;
 public class PaymentUI extends javax.swing.JFrame {
 
     DefaultTableModel model = new DefaultTableModel();
-    private final String[] colname = {"PONo.", "ItemNo.", "Item Name", "SupplierID", "Total Amount", "Status"};
+    private final String[] colname = {"PONo.", "ItemNo.", "SupplierID", "Total Amount", "PaymentDate", "Status"};
     private final String DELIVERY_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\delivery.txt";
 
     Inventory inv = new Inventory();
     PurchaseOrder po = new PurchaseOrder();
     Payment payment = new Payment();
+    PurchaseRequisition pr = new PurchaseRequisition();
 
     public PaymentUI() {
         initComponents();
         model.setColumnIdentifiers(colname);
         tableUI();
+
+        jTextField1.setEditable(false);
+        jTextField1.setFocusable(false);
+        jTextField2.setEditable(false);
+        jTextField2.setFocusable(false);
+        jTextField3.setEditable(false);
+        jTextField3.setFocusable(false);
+        jTextField4.setEditable(false);
+        jTextField4.setFocusable(false);
+        jTextField5.setEditable(false);
+        jTextField5.setFocusable(false);
     }
 
     /**
@@ -289,7 +301,8 @@ public class PaymentUI extends javax.swing.JFrame {
 
                     payment.addPayment(newPayment);
                     po.updateStatus(poNo, newStatus);
-
+                    pr.updateStatus(poNo.replace("PO-", "PR-"), newStatus);
+                    
                     br.close();
                 } catch (IOException e) {
                     JOptionPane.showMessageDialog(null, "Error opening delivery.txt");

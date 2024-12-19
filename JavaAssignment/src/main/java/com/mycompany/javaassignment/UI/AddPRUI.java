@@ -7,8 +7,10 @@ public class AddPRUI extends javax.swing.JFrame {
 
     CurrentTime time = new CurrentTime();
     PurchaseRequisition pr = new PurchaseRequisition();
-    User user = new User(){};
-    
+    User user = new User() {
+    };
+    Supplier supplier = new Supplier();
+
     private String latestPRNo;
 
     public AddPRUI() {
@@ -269,8 +271,6 @@ public class AddPRUI extends javax.swing.JFrame {
         jLabel32.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel32.setText("supplierID :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SUP-KUL-001", "SUP-KUL-002", "SUP-JHR-001", "SUP-PHG-001", " " }));
-
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Out of Stock", "Insufficient Stock", "Scheduled Re-stock", "Others" }));
 
         jButton13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -432,7 +432,7 @@ public class AddPRUI extends javax.swing.JFrame {
             String userIssued = "SM-1001"; // Search for current user
 
             // Create the new row
-            String newRow = prNo + "," + itemNo + "," + itemName + "," + supplier + "," + quantity + "," + reason + "," + desc + "," + dateRequested + "," + "waiting" + "," + userIssued + "," + "waiting" + "," + "Waiting to Review";
+            String newRow = prNo + "," + itemNo + "," + itemName + "," + supplier + "," + quantity + "," + reason + "," + desc + "," + dateRequested + "," + "Waiting" + "," + userIssued + "," + "Waiting" + "," + "Waiting to Review";
 
             // Stores new sales entry to file
             try {
@@ -459,10 +459,14 @@ public class AddPRUI extends javax.swing.JFrame {
         String itemNo = jTextFieldItemNo.getText();
         String itemName = item.getItemName(itemNo);
         String pricePerUnit = String.format("%.2f", item.getItemPrice(itemNo));
+        String[] supplierID = supplier.getSupplierID(itemNo);
 
-        if (itemName != null) {
+        if (itemName != null && supplierID.length > 0) {
             jTextFieldItemName.setText(itemName);
-            // set supplier combo box
+            jComboBox1.setModel(new DefaultComboBoxModel<>(supplierID));
+        } else if (itemName != null && supplierID.length <= 0) {
+            JOptionPane.showMessageDialog(null, "This item does not has supplier. Please contact Inventory Manager.", "Warning", JOptionPane.WARNING_MESSAGE);
+            clear();
         } else {
             JOptionPane.showMessageDialog(null, "Invalid Item No.");
         }
@@ -479,6 +483,9 @@ public class AddPRUI extends javax.swing.JFrame {
         } else if (user.getCurrentUserRole().equals("PM")) {
             setVisible(false);
             new PurchaseManagerUI().setVisible(true);
+        } else if (user.getCurrentUserRole().equals("AM")) {
+            setVisible(false);
+            new AdminUI().setVisible(true);
         }
 
     }//GEN-LAST:event_jButton13ActionPerformed
@@ -488,13 +495,12 @@ public class AddPRUI extends javax.swing.JFrame {
         jTextFieldDesc.setText("");
         jTextFieldItemName.setText("");
         jSpinner1.setValue(0);
-        jComboBox1.setSelectedIndex(0);
         jComboBox2.setSelectedIndex(0);
+        jComboBox1.removeAllItems();
     }
 
-    private void showNewPRNo() {
-        this.latestPRNo = "PR-" + time.getDateFormat() + String.format("%04d", (pr.rowCount() + 1));
-        jTextFieldPRNo.setText(latestPRNo);
+    private void showNewPRNo() {        
+        jTextFieldPRNo.setText(pr.newPRNo());
     }
 
     private void valueChangeReason() {

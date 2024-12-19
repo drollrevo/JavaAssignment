@@ -284,9 +284,8 @@ public class AddSalesUI extends javax.swing.JFrame {
 
                 // Stores new sales entry to file
                 try {
-                    se.createSalesEntry(newRow);
-
-                    JOptionPane.showMessageDialog(null, "Sales Entry Added Successfully.");
+                    se.createSalesEntry(newRow, itemNo, itemName, (se.getQty(salesEntryNo) - quantity));
+                    
                     clear();
                     showNewSENo();
                 } catch (Exception e) {

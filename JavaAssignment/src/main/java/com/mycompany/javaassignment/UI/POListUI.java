@@ -16,21 +16,53 @@ import java.util.*;
 public class POListUI extends javax.swing.JFrame {
 
     DefaultTableModel model = new DefaultTableModel();
-    private String[] colname = {"PONo.", "ItemNo", "ItemName", "SupplierID", "Quantity", "UnitPrice", "TotalPrice", "EstReceiveDate", "DateRequest", "DateApproved", "UserRequested", "PersonInCharge", "ProgressStatus"};
+    private String[] colname = {"PONo.", "ItemNo", "ItemName", "SupplierID", "Quantity", "UnitPrice", "TotalPrice", "ReceiveDate", "DateRequest", "DateApproved", "UserRequested", "PersonInCharge", "ProgressStatus"};
 
     PurchaseOrder po = new PurchaseOrder();
     CurrentTime time = new CurrentTime();
     User user = new User() {
     };
     PurchaseRequisition pr = new PurchaseRequisition();
+    Inventory inv = new Inventory();
 
     public POListUI() {
         initComponents();
         model.setColumnIdentifiers(colname);
         tableUI();
+
+        jTextField1.setEditable(false);
+        jTextField1.setFocusable(false);
+        jTextField2.setEditable(false);
+        jTextField2.setFocusable(false);
+        jTextField3.setEditable(false);
+        jTextField3.setFocusable(false);
+        jTextField4.setEditable(false);
+        jTextField4.setFocusable(false);
+        jTextField5.setEditable(false);
+        jTextField5.setFocusable(false);
+        jTextField6.setEditable(false);
+        jTextField6.setFocusable(false);
+        jTextField7.setEditable(false);
+        jTextField7.setFocusable(false);
+        jTextField8.setEditable(false);
+        jTextField8.setFocusable(false);
+        jTextField9.setEditable(false);
+        jTextField9.setFocusable(false);
+        jTextField10.setEditable(false);
+        jTextField10.setFocusable(false);
+        jTextField11.setEditable(false);
+        jTextField11.setFocusable(false);
+        jTextField12.setEditable(false);
+        jTextField12.setFocusable(false);
+        jTextField13.setEditable(false);
+        jTextField13.setFocusable(false);
+
         if (String.valueOf(user.getCurrentUserRole()).equals("FM")) {
             jButtonActivate.setText("APPROVE");
             jButtonCancel.setText("REJECT");
+        } else if (String.valueOf(user.getCurrentUserRole()).equals("IM")) {
+            jButtonActivate.setVisible(false);
+            jButtonCancel.setText("RECEIVED");
         }
     }
 
@@ -213,7 +245,7 @@ public class POListUI extends javax.swing.JFrame {
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel16.setText("Estimate Receive Date :");
+        jLabel16.setText("Receive Date :");
         jLabel16.setToolTipText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -395,7 +427,7 @@ public class POListUI extends javax.swing.JFrame {
         String qty = String.valueOf(model.getValueAt(row, 4));
         String unitPrice = String.valueOf(model.getValueAt(row, 5));
         String totalPrice = String.valueOf(model.getValueAt(row, 6));
-        String estReceiveDate = String.valueOf(model.getValueAt(row, 7));
+        String receivedDate = String.valueOf(model.getValueAt(row, 7));
         String dateRequested = String.valueOf(model.getValueAt(row, 8));
         String dateApproved = String.valueOf(model.getValueAt(row, 9));
         String userRequested = String.valueOf(model.getValueAt(row, 10));
@@ -409,7 +441,7 @@ public class POListUI extends javax.swing.JFrame {
         jTextField5.setText(qty);
         jTextField6.setText(unitPrice);
         jTextField7.setText(totalPrice);
-        jTextField8.setText(estReceiveDate);
+        jTextField8.setText(receivedDate);
         jTextField9.setText(dateRequested);
         jTextField10.setText(dateApproved);
         jTextField11.setText(userRequested);
@@ -430,6 +462,9 @@ public class POListUI extends javax.swing.JFrame {
         } else if (user.getCurrentUserRole().equals("FM")) {
             setVisible(false);
             new FinanceManagerUI().setVisible(true);
+        } else if (user.getCurrentUserRole().equals("IM")) {
+            setVisible(false);
+            new InventoryManagerUI().setVisible(true);
         }
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -447,21 +482,21 @@ public class POListUI extends javax.swing.JFrame {
             int qty = Integer.parseInt(jTextField5.getText());
             double unitPrice = Double.parseDouble(jTextField6.getText());
             double totalPrice = Double.parseDouble(jTextField7.getText());
-            String estReceiveDate = jTextField8.getText();
+            String receivedDate = jTextField8.getText();
             String dateRequested = jTextField9.getText();
             String dateApproved = jTextField10.getText();
             String userRequested = jTextField11.getText();
             String pic = jTextField12.getText();
             String status = jTextField13.getText();
-            String newStatus;
+            String newStatus = "";
 
             if (String.valueOf(jButtonCancel.getText()).equals("CANCEL") && status.equals("Waiting for FM to Approve PO")) {
-                if (poNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || qty <= 0 || unitPrice <= 0 || totalPrice <= 0 || estReceiveDate.isEmpty() || dateRequested.isEmpty() || dateApproved.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
+                if (poNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || qty <= 0 || unitPrice <= 0 || totalPrice <= 0 || receivedDate.isEmpty() || dateRequested.isEmpty() || dateApproved.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Invalid data.");
                 } else {
                     if (JOptionPane.showConfirmDialog(this, "Are you sure to cancel this PO?", "Cancel Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
                         newStatus = "Canceled";
-                        po.editPurchaseOrder(poNo, itemNo, itemName, supplier, qty, unitPrice, totalPrice, estReceiveDate, dateRequested, dateApproved, userRequested, pic, newStatus);
+                        po.editPurchaseOrder(poNo, itemNo, itemName, supplier, qty, unitPrice, totalPrice, receivedDate, dateRequested, dateApproved, userRequested, pic, newStatus);
                         pr.updateStatus(poNo.replace("PO-", "PR-"), newStatus);
                         clean();
                         cleanTF();
@@ -469,17 +504,32 @@ public class POListUI extends javax.swing.JFrame {
                     }
                 }
             } else if (String.valueOf(jButtonCancel.getText()).equals("REJECT") && status.equals("Waiting for FM to Approve PO")) {
-                if (poNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || qty <= 0 || unitPrice <= 0 || totalPrice <= 0 || estReceiveDate.isEmpty() || dateRequested.isEmpty() || dateApproved.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
+                if (poNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || qty <= 0 || unitPrice <= 0 || totalPrice <= 0 || receivedDate.isEmpty() || dateRequested.isEmpty() || dateApproved.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Invalid data.");
                 } else {
                     if (JOptionPane.showConfirmDialog(this, "Confirm to reject this PO?", "Reject Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
                         newStatus = "Rejected";
-                        po.editPurchaseOrder(poNo, itemNo, itemName, supplier, qty, unitPrice, totalPrice, estReceiveDate, dateRequested, time.toDateFormat(), userRequested, pic, newStatus);
+                        po.editPurchaseOrder(poNo, itemNo, itemName, supplier, qty, unitPrice, totalPrice, receivedDate, dateRequested, time.toDateFormat(), userRequested, pic, newStatus);
                         pr.updateStatus(poNo.replace("PO-", "PR-"), newStatus);
                         clean();
                         cleanTF();
                         tableUI();
                     }
+                }
+            } else if (String.valueOf(jButtonCancel.getText()).equals("RECEIVED") && (status.equals("Approved") || status.equals("Paid/Not-Received"))) {
+                if (status.equals("Approved")) {
+                    newStatus = "Unpaid/Received";
+                } else if (status.equals("Paid/Not-Received")) {
+                    newStatus = "Paid/Received";
+                }
+
+                if (JOptionPane.showConfirmDialog(this, "Confirm that received stocks for this PO?", "Receive Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
+                    inv.addStockQty(poNo, itemNo, itemName, qty, "SA");
+                    po.editPurchaseOrder(poNo, itemNo, itemName, supplier, qty, unitPrice, totalPrice, time.toDateFormat(), dateRequested, dateApproved, userRequested, pic, newStatus);
+                    pr.updateStatus(poNo.replace("PO-", "PR-"), newStatus);
+                    clean();
+                    cleanTF();
+                    tableUI();
                 }
             } else if (String.valueOf(jButtonCancel.getText()).equals("CANCEL") && !status.equals("Waiting for FM to Approve PO")) {
                 JOptionPane.showMessageDialog(null, "You cannot cancel this PO.");
@@ -505,7 +555,7 @@ public class POListUI extends javax.swing.JFrame {
             int qty = Integer.parseInt(jTextField5.getText());
             double unitPrice = Double.parseDouble(jTextField6.getText());
             double totalPrice = Double.parseDouble(jTextField7.getText());
-            String estReceiveDate = jTextField8.getText();
+            String receivedDate = jTextField8.getText();
             String dateRequested = jTextField9.getText();
             String dateApproved = jTextField10.getText();
             String userRequested = jTextField11.getText();
@@ -514,26 +564,27 @@ public class POListUI extends javax.swing.JFrame {
             String newStatus;
 
             if (String.valueOf(jButtonActivate.getText()).equals("ACTIVATE") && status.equals("Canceled")) {
-                if (poNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || qty <= 0 || unitPrice <= 0 || totalPrice <= 0 || estReceiveDate.isEmpty() || dateRequested.isEmpty() || dateApproved.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
+                if (poNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || qty <= 0 || unitPrice <= 0 || totalPrice <= 0 || receivedDate.isEmpty() || dateRequested.isEmpty() || dateApproved.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Invalid data.");
                 } else {
                     if (JOptionPane.showConfirmDialog(this, "Are you sure to activate this PO,", "Activate Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
                         newStatus = "Waiting for FM to Approve PO";
-                        po.editPurchaseOrder(poNo, itemNo, itemName, supplier, qty, unitPrice, totalPrice, estReceiveDate, dateRequested, dateApproved, userRequested, pic, newStatus);
-                        pr.updateStatus(poNo.replace("PO-", "PR-"), newStatus);
+                        po.editPurchaseOrder(poNo, itemNo, itemName, supplier, qty, unitPrice, totalPrice, receivedDate, dateRequested, dateApproved, userRequested, pic, newStatus);
+                        pr.updateStatus(poNo.replace("PO-", "PR-"), newStatus);                        
                         clean();
                         cleanTF();
                         tableUI();
                     }
                 }
             } else if (String.valueOf(jButtonActivate.getText()).equals("APPROVE") && status.equals("Waiting for FM to Approve PO")) {
-                if (poNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || qty <= 0 || unitPrice <= 0 || totalPrice <= 0 || estReceiveDate.isEmpty() || dateRequested.isEmpty() || dateApproved.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
+                if (poNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || qty <= 0 || unitPrice <= 0 || totalPrice <= 0 || receivedDate.isEmpty() || dateRequested.isEmpty() || dateApproved.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Invalid data.");
                 } else {
                     if (JOptionPane.showConfirmDialog(this, "Confirm to approve this PO,", "Approve Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
                         newStatus = "Approved";
-                        po.editPurchaseOrder(poNo, itemNo, itemName, supplier, qty, unitPrice, totalPrice, estReceiveDate, dateRequested, time.toDateFormat(), userRequested, pic, newStatus);
+                        po.editPurchaseOrder(poNo, itemNo, itemName, supplier, qty, unitPrice, totalPrice, receivedDate, dateRequested, time.toDateFormat(), userRequested, pic, newStatus);
                         pr.updateStatus(poNo.replace("PO-", "PR-"), newStatus);
+                        inv.addStockQty(poNo, itemNo, itemName, qty, "SIP");
                         clean();
                         cleanTF();
                         tableUI();
@@ -586,7 +637,7 @@ public class POListUI extends javax.swing.JFrame {
                     entry.getQty(),
                     entry.getUnitPrice(),
                     entry.getTotalPrice(),
-                    entry.getEstReceiveDate(),
+                    entry.getReceivedDate(),
                     entry.getDateRequest(),
                     entry.getDateApproved(),
                     entry.getUserRequested(),
@@ -656,7 +707,7 @@ public class POListUI extends javax.swing.JFrame {
                         break;
 
                     case "Estimate Receive Date":
-                        if (entry.getEstReceiveDate().equals(input)) {
+                        if (entry.getReceivedDate().equals(input)) {
                             display(entry, input);
                             matchFound = true;
                         }
@@ -722,7 +773,7 @@ public class POListUI extends javax.swing.JFrame {
             entry.getQty(),
             entry.getUnitPrice(),
             entry.getTotalPrice(),
-            entry.getEstReceiveDate(),
+            entry.getReceivedDate(),
             entry.getDateRequest(),
             entry.getDateApproved(),
             entry.getUserRequested(),

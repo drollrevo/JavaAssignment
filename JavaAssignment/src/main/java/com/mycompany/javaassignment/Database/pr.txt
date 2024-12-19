@@ -1,4 +1,4 @@
-PR-202412150001,PROD-10003,Panasonic Fridge,SUP-KUL-002,10,Out of Stock,NA,2024-12-15,waiting,SM-1001,waiting,Waiting to Review
-PR-202412170001,PROD-10001,Television,SUP-JHR-001,30,Insufficient Stock,NA,2024-12-17,2024-12-19,SM-1001,PM-1001,Approved
-PR-202412190001,PROD-10003,Panasonic Fridge,SUP-KUL-001,10,Out of Stock,NA,2024-12-19,waiting,SM-1001,waiting,Waiting to Review
-PR-202412190002,PROD-10001,Television,SUP-PHG-001,20,Insufficient Stock,NA,2024-12-19,2024-12-19,SM-1001,PM-1001,Waiting for FM to Approve PO
+PR-202412200002,PROD-10001,Samsung TV,SUP-OVS-001,10,Out of Stock,NA,2024-12-20,2024-12-20,SM-1001,PM-1001,Waiting for FM to Approve PO
+PR-202412200003,PROD-10002,Vacuum,SUP-JHR-001,20,Insufficient Stock,NA,2024-12-20,Waiting,SM-1001,Waiting,Waiting to Review
+PR-202412200004,PROD-10003,Panasonic Fridge,SUP-KDH-002,10,Out of Stock,NA,2024-12-20,Waiting,SM-1001,Waiting,Waiting to Review
+PR-202412200005,PROD-10001,Samsung TV,SUP-OVS-001,110,Scheduled Re-stock,NA,2024-12-20,Waiting,SM-1001,Waiting,Waiting to Review

@@ -136,16 +136,20 @@ public class PurchaseRequisition {
         try (BufferedReader br = new BufferedReader(new FileReader(PR_FILENAME))) {
             String line;
             while ((line = br.readLine()) != null) {
-                if (line.startsWith("PR-")) {
+                String[] parts = line.split(",");
+                if (parts[0].startsWith("PR-")) {
                     String prefix = "PR-" + time.getDateFormat();
-                    if (line.startsWith(prefix)) {
+                    System.out.println(Integer.parseInt(parts[0].substring(parts[0].length() - 4)));
+                    if (parts[0].startsWith(prefix)) {
                         // Extract the last three digits
-                        newPRNo = prefix + String.format("%04d", (Integer.parseInt(line.substring(line.length() - 4)) + 1));
+                        newPRNo = prefix + String.format("%04d", (Integer.parseInt(parts[0].substring(parts[0].length() - 4)) + 1));
                     }else {
                         newPRNo = prefix + "001";
                     }
                 }
             }
+            
+            return newPRNo;
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading pr.txt: " + e.getMessage());
         }

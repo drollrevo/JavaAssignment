@@ -16,7 +16,7 @@ public class PRUI extends javax.swing.JFrame {
 
         String roles = user.getCurrentUserRole();
 
-        if (!roles.equals("PM")) {
+        if (roles.equals("SM")) {
             jButton5.setVisible(false);
         }
     }
@@ -155,6 +155,9 @@ public class PRUI extends javax.swing.JFrame {
         } else if (user.getCurrentUserRole().equals("PM")) {
             setVisible(false);
             new PurchaseManagerUI().setVisible(true);
+        } else if (user.getCurrentUserRole().equals("AM")) {
+            setVisible(false);
+            new AdminUI().setVisible(true);
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed

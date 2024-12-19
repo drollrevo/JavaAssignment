@@ -12,6 +12,8 @@ public class InventoryUI extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel();
     private String[] colname = {"Item No", "Item Name", "Item Available", "Item In Progress", "Total Quantity"};
     Inventory inventory = new Inventory();
+    User user = new User() {
+    };
 
     private static final String STOCK_MOVEMENT_LOG_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/stockMovementLog.txt";
     private static final String INVENTORY_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/inventory.txt";
@@ -31,6 +33,17 @@ public class InventoryUI extends javax.swing.JFrame {
         jTextField2.setFocusable(false);
         jTextField4.setFocusable(false);
         jTextField5.setFocusable(false);
+
+        if (user.getCurrentUserRole().equals("FM")) {
+            jButton4.setVisible(false);
+
+            jSpinner1.setEnabled(false);
+            jSpinner1.setFocusable(false);
+            jLabel7.setVisible(false);
+            jTextField3.setVisible(false);
+            jLabel9.setVisible(false);
+            jComboBox1.setVisible(false);
+        }
 
     }
 
@@ -57,7 +70,7 @@ public class InventoryUI extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
         jTextField4 = new javax.swing.JTextField();
@@ -114,7 +127,7 @@ public class InventoryUI extends javax.swing.JFrame {
 
         jLabel7.setText("Reason");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Out of Stock", "Insufficient Stock", "Scheduled Re-stock", "Others" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Out of Stock", "Insufficient Stock", "Scheduled Re-stock", "Others" }));
 
         jLabel9.setText("Description");
 
@@ -150,7 +163,7 @@ public class InventoryUI extends javax.swing.JFrame {
                                                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(104, 104, 104)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,7 +177,7 @@ public class InventoryUI extends javax.swing.JFrame {
                 .addContainerGap(81, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jComboBox2, jLabel3, jLabel4, jTextField1, jTextField2});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jComboBox1, jLabel3, jLabel4, jTextField1, jTextField2});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,7 +216,7 @@ public class InventoryUI extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -233,15 +246,18 @@ public class InventoryUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseReleased
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        int selectedRow = jTable1.getSelectedRow();
+        int selectedRow = -1;
+        selectedRow = jTable1.getSelectedRow();
+
         if (selectedRow >= 0) {
             String itemNo = jTextField1.getText();
             String itemName = jTextField2.getText();
-            String reason = String.valueOf(jComboBox2.getSelectedItem());
+            String reason = String.valueOf(jComboBox1.getSelectedItem());
             String description = jTextField3.getText();
-            int qtyInProcess = Integer.parseInt(jTextField5.getText());
+            int qtyInProcess = Integer.parseInt(jTextField4.getText());
             int newQtyAvailable = (int) jSpinner1.getValue();
             int newTotalQty = qtyInProcess + newQtyAvailable;
+            String userID = user.getCurrentUserID();
 
             if (itemNo.isEmpty() || itemName.isEmpty() || reason.isEmpty() || description.isEmpty() || newQtyAvailable < 0) {
                 JOptionPane.showMessageDialog(null, "Invalid data.");
@@ -249,14 +265,14 @@ public class InventoryUI extends javax.swing.JFrame {
                 // Confirmation dialog for editing reason and description
                 if (JOptionPane.showConfirmDialog(this, "Are you sure you want to edit the reason and description?",
                         "Edit Confirmation", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    inventory.editStock(itemNo, itemName, reason, description, newTotalQty, qtyInProcess, newQtyAvailable);
+                    inventory.editStock(itemNo, itemName, reason, description, newQtyAvailable, qtyInProcess, newTotalQty, userID);
 
                     model.setValueAt(itemNo, selectedRow, 0);           // Update Item ID
                     model.setValueAt(itemName, selectedRow, 1);         // Update Item Name
                     model.setValueAt(newQtyAvailable, selectedRow, 2);  // Update Available Quantity
                     model.setValueAt(qtyInProcess, selectedRow, 3);  // Update Quantity in Progress
                     model.setValueAt(newTotalQty, selectedRow, 4);      // Update Total Quantity  
-                    
+
                     clearFormFields();
                 }
             }
@@ -270,10 +286,13 @@ public class InventoryUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-//       inventoryUI.setVisible(true);
-        new InventoryManagerUI().setVisible(true);
-        this.dispose();
+        if (user.getCurrentUserRole().equals("FM")) {
+            new FinanceManagerUI().setVisible(true);
+            this.dispose();
+        } else {
+            new InventoryManagerUI().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -318,7 +337,7 @@ public class InventoryUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -349,9 +368,9 @@ public class InventoryUI extends javax.swing.JFrame {
                 if (data.length >= 5) { // Ensure there are enough fields (7 columns)
                     String itemNo = data[0];
                     String itemName = data[1];
-                    String totalQty = data[2];
-                    String inProgress = data[4];
-                    String available = data[3];
+                    String available = data[2];
+                    String inProgress = data[3];
+                    String totalQty = data[4];
 //                String reason = data[5];
 //                String description = data[6];
 
@@ -359,10 +378,9 @@ public class InventoryUI extends javax.swing.JFrame {
                     model.addRow(new Object[]{
                         itemNo,
                         itemName,
-                        totalQty,
+                        available,
                         inProgress,
-                        available, //                    reason,
-                    //                    description
+                        totalQty
                     });
                 }
             }
@@ -370,106 +388,6 @@ public class InventoryUI extends javax.swing.JFrame {
             System.err.println("Error reading inventory.txt: " + e.getMessage());
             JOptionPane.showMessageDialog(this, "Error loading data from inventory.txt", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-//       model.setRowCount(0); // Clear the table before populating it
-//    Map<String, String[]> stockData = loadStockData(); // Load stock data into a map
-//    List<Item> items = new Item().itemList(); // Load item list from Item.txt
-//
-//    if (items != null && !items.isEmpty()) {
-//        for (Item entry : items) {
-//            String itemNo = entry.getItemNo();
-//            String itemName = entry.getItemName();
-//            String totalQty = "N/A", inProgress = "N/A", available = "N/A";
-//
-//            // Match itemNo with stock data
-//            if (stockData.containsKey(itemNo)) {
-//                String[] stockDetails = stockData.get(itemNo);
-//                totalQty = stockDetails[0];
-//                inProgress = stockDetails[1];
-//                available = stockDetails[2];
-//            }
-//
-//            // Print for debugging
-//            System.out.println("Adding to table: " + itemNo + ", " + itemName);
-//
-//            // Add combined data to the table
-//            model.addRow(new Object[]{
-//                itemNo,
-//                itemName,
-//                totalQty,
-//                inProgress,
-//                available
-//            });
-//        }
-//    } else {
-//        System.err.println("No data available in Item.txt.");
-//        JOptionPane.showMessageDialog(this, "There is no data in Item.txt", "No Data", JOptionPane.WARNING_MESSAGE);
-//    }
-//}
-//
-//// Helper method to load stock data from another file (e.g., Stock.txt)
-//private Map<String, String[]> loadStockData() {
-//    Map<String, String[]> stockMap = new HashMap<>();
-//    String line;
-//
-//    try (BufferedReader br = new BufferedReader(new FileReader(INVENTORY_FILENAME))) {
-//        while ((line = br.readLine()) != null) {
-//            String[] data = line.split(", "); // Assuming data is comma-separated
-//            if (data.length >= 4) { // Ensure the file has the required columns
-//                String itemNo = data[0];
-//                String totalQty = data[1];
-//                String inProgress = data[2];
-//                String available = data[3];
-//                stockMap.put(itemNo, new String[]{totalQty, inProgress, available});
-//            }
-//        }
-//    } catch (IOException e) {
-//        System.err.println("Error reading Stock.txt: " + e.getMessage());
-//    }
-//
-//    return stockMap;
-//       
-//       
-//       
-//       model.setRowCount(0); // Clear the table before loading new data
-//    List<String> stockData = new ArrayList<>();
-//    
-//    try (BufferedReader br = new BufferedReader(new FileReader(INVENTORY_FILENAME))) {
-//        String line;
-//        while ((line = br.readLine()) != null) {
-//            String[] data = line.split(", ");
-//            if (data.length >= 7) { // Ensure all columns are available in the file
-//                // Populate table with updated stock data
-//                model.addRow(new Object[]{
-//                    data[0], // Item No
-//                    data[1], // Item Name
-//                    data[2], // Total Quantity
-//                    data[3], // Items In Progress
-//                    data[4], // Available Items
-//                    data[5], // Reason
-//                    data[6]  // Description
-//                });
-//            }
-//        }
-//    } catch (IOException e) {
-//        JOptionPane.showMessageDialog(null, "Error loading data: " + e.getMessage());
-//        e.printStackTrace();
-//    }
-//        List<Item> items = new Item().itemList();
-//
-//        if (items != null && !items.isEmpty()) {
-//            for (Item entry : items) {
-//                model.addRow(new Object[]{
-//                    entry.getItemNo(),
-//                    entry.getItemName(),
-//                    entry.getItemPrice(),
-//                    entry.getSupplierID(),
-//                    entry.getItemStatus()
-//                });
-//            }
-//        } else {
-//            JOptionPane.showMessageDialog(null, "There is no data in Item.txt");
-//        }
     }
 
     private void clearFormFields() {
@@ -477,7 +395,7 @@ public class InventoryUI extends javax.swing.JFrame {
         jTextField1.setText("");
         jTextField2.setText("");
         jTextField3.setText("");
-        jComboBox2.setSelectedIndex(0);
+        jComboBox1.setSelectedIndex(0);
         jTextField5.setText("");
         jSpinner1.setValue(0);
 

@@ -5,16 +5,12 @@ import java.io.*;
 import javax.swing.JOptionPane;
 //All possible role options
 
-enum Role {
-    FM, Admin, PurchaseManager
-}
+public class User {
 
-public abstract class User {
-
-    private int userId;
+    private String userId;
     private String username;
     private String password;
-    private Role role;
+    private String role;
     private String active;
 
     static final String USERS = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\users.txt";  //Stores users
@@ -28,7 +24,7 @@ public abstract class User {
                 file.createNewFile();
             }
         } catch (IOException e) {
-            System.out.println("Error initializing USERS file: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error initializing USERS file: " + e.getMessage());
         }
     }
 
@@ -37,25 +33,25 @@ public abstract class User {
     }
 
     //Constructor
-    public User(int userId, String username, String password, Role role) {
+    // Constructor with default active = true
+    public User(String userId, String username, String password, String role) {
+        this(userId, username, password, role, "ACTIVE"); // Call the extended constructor
+    }
 
-//        if (usernameTaken(username) == ACTIVE) {//No same username
-//            System.out.println("Username:" + username + " already exists. Please choose a different one.");
-//            return;
-//        }
+    // Constructor with explicit active status
+    public User(String userId, String username, String password, String role, String active) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.role = role;
-        this.active = "ACTIVE";
-        saveUser();
+        this.active = active;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -75,11 +71,11 @@ public abstract class User {
         this.password = password;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -103,23 +99,6 @@ public abstract class User {
         }
     }
 
-    //Checks is the username exist
-//    private boolean usernameTaken(String username) {
-//        try (
-//            BufferedReader reader = new BufferedReader(new FileReader(USERS))) {
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                String[] userData = line.split(",");
-//                if (userData[1].equals(username)) {
-//                    return true;
-//                }
-//            }
-//            reader.close();
-//        } catch (IOException e) {
-//            System.out.println("Error: " + e.getMessage());
-//        }
-//        return false;
-//    }
     //Login method
     public String login(String username, String password) {
         try (
@@ -131,7 +110,7 @@ public abstract class User {
                     System.out.println("Login successful! Role: " + userData[3]);
 
                     BufferedWriter bw = new BufferedWriter(new FileWriter(LOGIN, false));
-                    String loginLine = String.join(", ", userData[0], userData[1], userData[3]);
+                    String loginLine = String.join(",", userData[0], userData[1], userData[3]);
 
                     bw.write(loginLine);
 
@@ -141,7 +120,7 @@ public abstract class User {
                     return userData[3];
                 }
             }
-            reader.close();                        
+            reader.close();
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }

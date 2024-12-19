@@ -1,1 +1,1 @@
-poNo, itemNo, itemName, qty, receiveDate, userIssued
+PO-202412200001,PROD-10002,Vacuum,2000,2024-12-20,IM-1001
