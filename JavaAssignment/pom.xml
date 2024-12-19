@@ -11,4 +11,5 @@
         <maven.compiler.target>22</maven.compiler.target>
         <exec.mainClass>com.mycompany.javaassignment.JavaAssignment</exec.mainClass>
     </properties>
+    <name>JavaAssignmentMain</name>
 </project>

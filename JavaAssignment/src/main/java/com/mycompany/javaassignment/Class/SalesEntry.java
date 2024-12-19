@@ -14,6 +14,8 @@ public class SalesEntry extends JFrame {
     private static final String SALES_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\SalesEntry.txt";
     private static final String SALES_LOG_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\SalesEntryLog.txt";
 
+    CurrentTime time = new CurrentTime();
+
     // Constructors
     public SalesEntry() {
     }
@@ -98,8 +100,6 @@ public class SalesEntry extends JFrame {
     public List<SalesEntry> salesEntryList() {
         List<SalesEntry> salesEntries = new ArrayList<>();
 
-        System.out.println(SALES_FILENAME);
-        
         try (BufferedReader br = new BufferedReader(new FileReader(SALES_FILENAME))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -119,7 +119,7 @@ public class SalesEntry extends JFrame {
                     salesEntries.add(new SalesEntry(salesEntryNo, itemNo, itemName, pricePerUnit, qty, amount, date, userID));
                 }
             }
-            
+
             br.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Unable to Open SalesEntry.txt.");
@@ -131,7 +131,7 @@ public class SalesEntry extends JFrame {
     }
 
     public void createSalesEntry(String newRow) {
-        String currentDate = new CurrentTime().toDateTimeFormat();
+        String currentDate = time.toDateTimeFormat();
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(SALES_FILENAME, true))) {
             bw.write(newRow);
@@ -154,8 +154,27 @@ public class SalesEntry extends JFrame {
         }
     }
 
-    public void salesReport() {
+    public String newSalesEntryNo() {
+        String newSENo = null;
 
+        try (BufferedReader br = new BufferedReader(new FileReader(SALES_FILENAME))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith("ST-")) {
+                    String prefix = "ST-" + time.getDateFormat();
+                    if (line.startsWith(prefix)) {
+                        // Extract the last three digits
+                        newSENo = prefix + String.format("%03d", (Integer.parseInt(line.substring(line.length() - 3)) + 1));
+                    } else {
+                        newSENo = prefix + "001";
+                    }
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading salesEntry.txt: " + e.getMessage());
+        }
+
+        return newSENo;
     }
 
     public void editSalesEntry(String salesEntryNo, String itemNo, String itemName, String price, int qty, String amount, String date, String user) {
@@ -182,8 +201,8 @@ public class SalesEntry extends JFrame {
 
                     // Log the change before adding to the list
                     try (BufferedWriter logBw = new BufferedWriter(new FileWriter(SALES_LOG_FILENAME, true))) {
-                        logBw.write("Edited SalesEntry: " + line + " -> " + updatedLine + " | Timestamp: " + new java.util.Date());
-                        logBw.newLine();                        
+                        logBw.write("Edited SalesEntry: " + line + " -> " + updatedLine + " | Timestamp: " + time.toDateTimeFormat());
+                        logBw.newLine();
                         logBw.close();
                     } catch (IOException logException) {
                         JOptionPane.showMessageDialog(null, "Error logging edited sales entry.");
@@ -294,10 +313,5 @@ public class SalesEntry extends JFrame {
         }
 
         return count;
-    }
-
-    @Override
-    public String toString() {
-        return "SalesEntry{" + "salesEntryNo=" + salesEntryNo + ", itemNo=" + itemNo + ", itemName=" + itemName + ", date=" + date + ", userID=" + userID + ", qty=" + qty + ", pricePerUnit=" + pricePerUnit + ", amount=" + amount + '}';
     }
 }

@@ -303,7 +303,7 @@ public class AddSalesUI extends javax.swing.JFrame {
 
         String itemNo = itemNoJTextField.getText();
         String itemName = item.getItemName(itemNo);
-        String pricePerUnit = String.format("%.2f", item.getPricePerUnit(itemNo));
+        String pricePerUnit = String.format("%.2f", item.getItemPrice(itemNo));
 
         if (itemName != null) {
             itemNameJTextField.setText(itemName);
@@ -319,7 +319,7 @@ public class AddSalesUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void showNewSENo() {
-        this.latestSENo = "ST-" + time.getDateFormat() + String.format("%03d", (se.rowCount() + 1));
+        this.latestSENo = se.newSalesEntryNo();
         seNoJTextField.setText(latestSENo);
     }
 

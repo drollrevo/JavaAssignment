@@ -7,7 +7,8 @@ public class AddPRUI extends javax.swing.JFrame {
 
     CurrentTime time = new CurrentTime();
     PurchaseRequisition pr = new PurchaseRequisition();
-
+    User user = new User(){};
+    
     private String latestPRNo;
 
     public AddPRUI() {
@@ -426,7 +427,7 @@ public class AddPRUI extends javax.swing.JFrame {
 // Validate that all required fields contain values
         if (prNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || reason.isEmpty() || quantity <= 0) {
             JOptionPane.showMessageDialog(null, "Please fill in all fields correctly.");
-        } else {            
+        } else {
             String dateRequested = time.toDateFormat();
             String userIssued = "SM-1001"; // Search for current user
 
@@ -457,7 +458,7 @@ public class AddPRUI extends javax.swing.JFrame {
 
         String itemNo = jTextFieldItemNo.getText();
         String itemName = item.getItemName(itemNo);
-        String pricePerUnit = String.format("%.2f", item.getPricePerUnit(itemNo));
+        String pricePerUnit = String.format("%.2f", item.getItemPrice(itemNo));
 
         if (itemName != null) {
             jTextFieldItemName.setText(itemName);
@@ -472,8 +473,14 @@ public class AddPRUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonClearActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        setVisible(false);
-        new SalesManagerUI().setVisible(true);
+        if (user.getCurrentUserRole().equals("SM")) {
+            setVisible(false);
+            new SalesManagerUI().setVisible(true);
+        } else if (user.getCurrentUserRole().equals("PM")) {
+            setVisible(false);
+            new PurchaseManagerUI().setVisible(true);
+        }
+
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void clear() {

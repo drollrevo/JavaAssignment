@@ -12,10 +12,8 @@ public class PurchaseRequisition {
     private static final String PR_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\pr.txt";
     private static final String PR_LOG_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\prLog.txt";
 
-    /*
-    PRNo, itemNo, itemName, supplierID, reason, description, dateRequest, dateIssued, userRequest, progressStatus
-    PR-20241116-0001, PROD-10001, Television, SUP-2024-KUL-001, out of stock, 1-12-2024, 16-11-2024, -, SM-1001, Reviewing
-     */
+    CurrentTime time = new CurrentTime();
+
     public PurchaseRequisition() {
     }
 
@@ -132,6 +130,29 @@ public class PurchaseRequisition {
     }
 
     /*Methods*/
+    public String newPRNo() {
+        String newPRNo = null;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(PR_FILENAME))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith("PR-")) {
+                    String prefix = "PR-" + time.getDateFormat();
+                    if (line.startsWith(prefix)) {
+                        // Extract the last three digits
+                        newPRNo = prefix + String.format("%04d", (Integer.parseInt(line.substring(line.length() - 4)) + 1));
+                    }else {
+                        newPRNo = prefix + "001";
+                    }
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading pr.txt: " + e.getMessage());
+        }
+
+        return newPRNo;
+    }
+
     public List<PurchaseRequisition> prList() {
         List<PurchaseRequisition> pr = new ArrayList<>();
 
@@ -217,6 +238,66 @@ public class PurchaseRequisition {
         }
     }
 
+    public void updateStatus(String prNo, String status) {
+        File prFile = new File(PR_FILENAME);
+        boolean entryFound = false;
+        String updatedLine = null;
+        List<String> lines = new ArrayList<>(); // To hold all lines
+
+        // Read the file content
+        try (BufferedReader br = new BufferedReader(new FileReader(prFile))) {
+            System.out.println(prNo);
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+
+                if (parts.length == 12 && parts[0].trim().equals(prNo)) {
+                    // If the prNo matches, edit the line
+                    System.out.println("PR Found");
+                    entryFound = true;
+
+                    // Create the updated line with new values
+                    updatedLine = prNo + "," + parts[1].trim() + "," + parts[2].trim() + "," + parts[3].trim() + "," + parts[4].trim() + "," + parts[5].trim() + "," + parts[6].trim() + "," + parts[7].trim() + "," + parts[8].trim() + "," + parts[9].trim() + "," + parts[10].trim() + "," + status;
+
+                    // Add the updated line to the list
+                    lines.add(updatedLine);
+
+                    // Log the change before adding to the list
+                    try (BufferedWriter logBw = new BufferedWriter(new FileWriter(PR_LOG_FILENAME, true))) {
+                        logBw.write("Edited PR: " + line + " -> " + updatedLine + " | Timestamp: " + new java.util.Date());
+                        logBw.newLine();
+                        logBw.close();
+                    } catch (IOException logException) {
+                        JOptionPane.showMessageDialog(null, "Error logging edited purchase requisition.");
+                    }
+                } else {
+                    // Add the unchanged line to the list
+                    lines.add(line);
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error processing PurchaseRequisition.txt.");
+            return;
+        }
+
+        // If entry was found, write all the lines back to the file
+        if (entryFound) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(prFile))) {
+                // Write all lines back to the file
+                for (String line : lines) {
+                    bw.write(line);
+                    bw.newLine();
+                }
+                bw.close();
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error writing to PurchaseRequisition.txt.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Purchase requisition not found.");
+        }
+    }
+
     public void editPR(String prNo, String itemNo, String itemName, String supplierID, int qty, String reason, String description, String dateRequested, String dateIssued, String userRequested, String personInCharge, String progressStatus) {
         File prFile = new File(PR_FILENAME);
         boolean entryFound = false;
@@ -229,8 +310,11 @@ public class PurchaseRequisition {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
+                System.out.println(prNo);
+                System.out.println(parts[0].trim());
                 if (parts.length == 12 && parts[0].trim().equals(prNo)) {
                     // If the prNo matches, edit the line
+                    System.out.println("PR Found");
                     entryFound = true;
 
                     // Create the updated line with new values
@@ -267,7 +351,7 @@ public class PurchaseRequisition {
                     bw.newLine();
                 }
                 JOptionPane.showMessageDialog(null, "Purchase requisition updated successfully.");
-                
+
                 bw.close();
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Error writing to PurchaseRequisition.txt.");

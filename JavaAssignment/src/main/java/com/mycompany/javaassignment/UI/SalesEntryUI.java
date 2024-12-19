@@ -246,8 +246,8 @@ public class SalesEntryUI extends javax.swing.JFrame {
                                 .addComponent(jSpinner1)))
                         .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonDelete1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -426,6 +426,7 @@ public class SalesEntryUI extends javax.swing.JFrame {
         jTextField6.setText("");
         jTextField7.setText("");
         jTextField8.setText("");
+        jComboBox1.setSelectedIndex(0);
     }
 
     private void tableUI() {
@@ -546,7 +547,7 @@ public class SalesEntryUI extends javax.swing.JFrame {
 
         String itemNo = jTextField2.getText();
         String itemName = item.getItemName(itemNo);
-        String pricePerUnit = String.format("%.2f", item.getPricePerUnit(itemNo));
+        String pricePerUnit = String.format("%.2f", item.getItemPrice(itemNo));
         double amount = 0;
 
         if (itemName != null) {

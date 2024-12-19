@@ -12,10 +12,12 @@ public class PRListUI extends javax.swing.JFrame {
     private String[] colName = {"prNo.", "ItemNo.", "ItemName", "SupplierID", "Quantity", "Reason", "Description", "DateRequested", "DateIssued", "UserRequested", "PersonInCharge", "Status"};
 
     PurchaseRequisition pr = new PurchaseRequisition();
-
+    User user = new User(){};
+    
     public PRListUI() {
         model.setColumnIdentifiers(colName);
         initComponents();
+        valueChangeReason();
         tableUI();
         jTextField1.setEditable(false);
         jTextField3.setEditable(false);
@@ -31,6 +33,8 @@ public class PRListUI extends javax.swing.JFrame {
         jTextField11.setFocusable(false);
         jTextField12.setFocusable(false);
         jTextField13.setFocusable(false);
+        jTextField7.setVisible(false);
+        jLabel10.setVisible(false);
     }
 
     /**
@@ -106,27 +110,35 @@ public class PRListUI extends javax.swing.JFrame {
         jLabel3.setText("NEXUS SDN BHD POTS");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("PRNo :");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("ItemNo :");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Item Name :");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("SupplierID :");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setText("Quantity :");
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("Reason :");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel10.setText("Description :");
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel11.setText("Date Request :");
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -159,15 +171,19 @@ public class PRListUI extends javax.swing.JFrame {
         });
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Date Issued :");
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Progress Status :");
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel14.setText("User Requested :");
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel15.setText("Person In Charge :");
 
         jButtonReset.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -241,18 +257,18 @@ public class PRListUI extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(38, 38, 38)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -359,8 +375,13 @@ public class PRListUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        setVisible(false);
-        new SalesManagerUI().setVisible(true);
+        if (user.getCurrentUserRole().equals("SM")) {
+            setVisible(false);
+            new SalesManagerUI().setVisible(true);
+        } else if (user.getCurrentUserRole().equals("PM")) {
+            setVisible(false);
+            new PurchaseManagerUI().setVisible(true);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
@@ -398,7 +419,10 @@ public class PRListUI extends javax.swing.JFrame {
         jComboBox3.setSelectedItem(supplier);
         jSpinner1.setValue(qty);
         jComboBox2.setSelectedItem(reason);
-        jTextField7.setText(description);
+        if (!description.equals("NA")) {
+            jTextField7.setVisible(true);
+            jTextField7.setText(description);
+        }
         jTextField8.setText(dateRequested);
         jTextField10.setText(dateIssued);
         jTextField11.setText(userRequested);
@@ -408,6 +432,7 @@ public class PRListUI extends javax.swing.JFrame {
 
     private void jButtonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResetActionPerformed
         clean();
+        cleanTF();
         tableUI();
     }//GEN-LAST:event_jButtonResetActionPerformed
 
@@ -435,28 +460,34 @@ public class PRListUI extends javax.swing.JFrame {
         String supplier = String.valueOf(jComboBox3.getSelectedItem());
         int qty = (int) jSpinner1.getValue();
         String reason = String.valueOf(jComboBox2.getSelectedItem());
-        String desc = jTextField7.getText();
         String dateRequested = jTextField8.getText();
         String dateIssued = jTextField10.getText();
         String userRequested = jTextField11.getText();
         String pic = jTextField12.getText();
         String status = jTextField13.getText();
+        String desc = jTextField7.getText();
 
-        System.out.println(prNo + itemNo + itemName + supplier + qty + reason + desc + dateRequested + dateIssued + userRequested + pic + status);
+        if (!reason.equals("Others")) {
+            desc = "NA";
+        }
 
-        if (prNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || reason.isEmpty() || desc.isEmpty() || dateRequested.isEmpty() || dateIssued.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Invalid data.");
-        } else {
-            if (qty <= 0) {
-                JOptionPane.showMessageDialog(null, "Invalid Quantity");
+        if ((status.equals("Waiting to Review"))) {
+            if (prNo.isEmpty() || itemNo.isEmpty() || itemName.isEmpty() || supplier.isEmpty() || reason.isEmpty() || desc.isEmpty() || dateRequested.isEmpty() || dateIssued.isEmpty() || userRequested.isEmpty() || pic.isEmpty() || status.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Invalid data.");
             } else {
-                if (JOptionPane.showConfirmDialog(this, "Are you sure to edit the data?", "Edit Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
-                    pr.editPR(prNo, itemNo, itemName, supplier, qty, reason, desc, dateRequested, dateIssued, userRequested, pic, status);
+                if (qty <= 0) {
+                    JOptionPane.showMessageDialog(null, "Invalid Quantity");
+                } else {
+                    if (JOptionPane.showConfirmDialog(this, "Are you sure to edit the data?", "Edit Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
+                        pr.editPR(prNo, itemNo, itemName, supplier, qty, reason, desc, dateRequested, dateIssued, userRequested, pic, status);
 
-                    clean();
-                    tableUI();
+                        clean();
+                        tableUI();
+                    }
                 }
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "PO generated for this PO, unable to edit it.");
         }
     }//GEN-LAST:event_jButtonEditActionPerformed
 
@@ -497,6 +528,7 @@ public class PRListUI extends javax.swing.JFrame {
         jTextField11.setText("");
         jTextField12.setText("");
         jTextField13.setText("");
+        jComboBox1.setSelectedIndex(0);
     }
 
     private void tableUI() {
@@ -647,6 +679,23 @@ public class PRListUI extends javax.swing.JFrame {
             entry.getStatus()
 
         });
+    }
+
+    private void valueChangeReason() {
+        jComboBox2.addItemListener(e -> comboBoxItemChanged());
+    }
+
+    private void comboBoxItemChanged() {
+        if (jComboBox2.getSelectedItem().equals("Others")) {
+            jLabel10.setVisible(true);
+            jTextField7.setVisible(true);
+            int row = PRList.getSelectedRow();
+
+            jTextField7.setText(String.valueOf(model.getValueAt(row, 6)));
+        } else {
+            jLabel10.setVisible(false);
+            jTextField7.setVisible(false);
+        }
     }
 
     /**

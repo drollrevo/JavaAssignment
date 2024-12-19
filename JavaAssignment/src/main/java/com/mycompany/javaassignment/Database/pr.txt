@@ -1,2 +1,4 @@
 PR-202412150001,PROD-10003,Panasonic Fridge,SUP-KUL-002,10,Out of Stock,NA,2024-12-15,waiting,SM-1001,waiting,Waiting to Review
-PR-202412170001,PROD-10001,Television,SUP-JHR-001,30,Scheduled Re-stock,NA,2024-12-17,waiting,SM-1001,waiting,Waiting to Review
+PR-202412170001,PROD-10001,Television,SUP-JHR-001,30,Insufficient Stock,NA,2024-12-17,2024-12-19,SM-1001,PM-1001,Approved
+PR-202412190001,PROD-10003,Panasonic Fridge,SUP-KUL-001,10,Out of Stock,NA,2024-12-19,waiting,SM-1001,waiting,Waiting to Review
+PR-202412190002,PROD-10001,Television,SUP-PHG-001,20,Insufficient Stock,NA,2024-12-19,2024-12-19,SM-1001,PM-1001,Waiting for FM to Approve PO

@@ -1,3 +1,4 @@
-PROD-10001, Television, 0, 0, 0
-PROD-10002, Vacuum, 0, 0, 0
-PROD-10003, Panasonic Fridge, 0, 0, 0
+PROD-10001, Television, 3, 0, 3
+PROD-10002, Vacuum, 1, 2, 3
+PROD-10003, Panasonic Fridge, 7, 4, 3
+PROD-10004, ToothBrush, 3, 0, 3

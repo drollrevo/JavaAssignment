@@ -5,6 +5,8 @@
 package com.mycompany.javaassignment.UI;
 
 import javax.swing.*;
+import com.mycompany.javaassignment.Class.*;
+import java.awt.Color;
 
 /**
  *
@@ -12,11 +14,17 @@ import javax.swing.*;
  */
 public class SalesManagerUI extends javax.swing.JFrame {
 
-    /**
-     * Creates new form SalesManagerUI1
-     */
+    User user = new User() {
+    };
+
     public SalesManagerUI() {
         initComponents();
+
+        String roles = user.getCurrentUserRole();
+        if (roles.equals("AM")) {
+            jButton5.setText("Back");
+            jButton5.setForeground(Color.black);
+        }
     }
 
     /**
@@ -131,9 +139,8 @@ public class SalesManagerUI extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if (JOptionPane.showConfirmDialog(this, "Logout?", "Logout Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
-            System.exit(0);
-            //        setVisible(false);
-            //        new ?().setVisible(true);
+            setVisible(false);
+            new Main().setVisible(true);
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
