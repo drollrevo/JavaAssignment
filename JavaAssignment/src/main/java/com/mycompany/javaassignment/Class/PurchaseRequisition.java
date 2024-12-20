@@ -9,8 +9,8 @@ public class PurchaseRequisition {
     private String prNo, itemNo, itemName, supplier, reason, description, dateRequested, dateIssued, userRequested, personInCharge, status;
     private int purchaseQty;
 
-    private static final String PR_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\pr.txt";
-    private static final String PR_LOG_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\prLog.txt";
+    private static final String PR_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/pr.txt";
+    private static final String PR_LOG_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/prLog.txt";
 
     CurrentTime time = new CurrentTime();
 

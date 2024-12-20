@@ -11,8 +11,8 @@ public class SalesEntry extends JFrame {
     private int qty;
     private double pricePerUnit, amount;
 //C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Database\salesEntry.txt
-    private static final String SALES_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\SalesEntry.txt";
-    private static final String SALES_LOG_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\SalesEntryLog.txt";
+    private static final String SALES_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/SalesEntry.txt";
+    private static final String SALES_LOG_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/SalesEntryLog.txt";
 
     CurrentTime time = new CurrentTime();
     Inventory inv = new Inventory();

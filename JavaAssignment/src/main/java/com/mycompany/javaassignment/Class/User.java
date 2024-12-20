@@ -13,8 +13,8 @@ public class User {
     private String role;
     private String active;
 
-    static final String USERS = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\users.txt";  //Stores users
-    static final String LOGIN = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\CurrentUser.txt";  //Stores login users
+    static final String USERS = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/users.txt";  //Stores users
+    static final String LOGIN = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/CurrentUser.txt";  //Stores login users
 
     //initialize file and if the file does not existthen dynamically create it
     static {

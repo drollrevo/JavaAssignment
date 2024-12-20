@@ -18,7 +18,7 @@ public class PaymentUI extends javax.swing.JFrame {
 
     DefaultTableModel model = new DefaultTableModel();
     private final String[] colname = {"PONo.", "ItemNo.", "SupplierID", "Total Amount", "PaymentDate", "Status"};
-    private final String DELIVERY_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\delivery.txt";
+    private final String DELIVERY_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/delivery.txt";
 
     Inventory inv = new Inventory();
     PurchaseOrder po = new PurchaseOrder();

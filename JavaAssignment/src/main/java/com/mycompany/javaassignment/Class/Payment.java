@@ -14,7 +14,7 @@ public class Payment {
     private String paymentDate;
     private String paymentStatus;
 
-    private final String PAYMENT_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\payment.txt";
+    private final String PAYMENT_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/payment.txt";
 
     CurrentTime time = new CurrentTime();
     

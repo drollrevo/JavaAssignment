@@ -7,8 +7,8 @@ import java.util.*;
 //Extend from User
 public class Admin extends User {
 
-    static final String USERS = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\users.txt";  //Stores users
-    static final String TEMP = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\temp.txt";  //Stores users 
+    static final String USERS = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/users.txt";  //Stores users
+    static final String TEMP = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/temp.txt";  //Stores users 
 
     User user = new User() {
     };

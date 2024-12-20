@@ -9,10 +9,6 @@ public class Supplier extends JFrame {
     // Variable Initialize
     private String supplierID, supplierName, address, nation, supplierStatus, itemNo, itemName;
     private double price;
-//C:\Users\qianc\Documents\NetBeansProjects\JavaAssignment\JavaAssignment\src\main\java\com\mycompany\javaassignment\Database\salesEntry.txt
-    //private static final String SALES_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\SalesEntry.txt";
-    //private static final String SALES_LOG_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\SalesEntryLog.txt";
-
     private static final String SUPPLIER_FILE = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/supplier.txt";
     CurrentTime time = new CurrentTime();
 

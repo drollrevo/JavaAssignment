@@ -20,8 +20,8 @@ public class PurchaseOrder {
     private String pic;
     private String status;
 
-    private final String PO_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\purchase_orders.txt";
-    private final String PO_LOG_FILENAME = System.getProperty("user.dir") + "\\src\\main\\java\\com\\mycompany\\javaassignment\\Database\\purchase_orders_log.txt";
+    private final String PO_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/purchase_orders.txt";
+    private final String PO_LOG_FILENAME = System.getProperty("user.dir") + "/src/main/java/com/mycompany/javaassignment/Database/purchase_orders_log.txt";
 
     CurrentTime time = new CurrentTime();
 
