@@ -513,9 +513,12 @@ public class PRListUI extends javax.swing.JFrame {
         String itemName = item.getItemName(itemNo);
         String[] supplierID = sup.getSupplierID(itemNo);
 
-        if (itemName != null) {
+        if (itemName != null && supplierID.length > 0) {
             jTextField3.setText(itemName);
-            jComboBox1.setModel(new DefaultComboBoxModel<>(supplierID));
+            jComboBox3.setModel(new DefaultComboBoxModel<>(supplierID));
+        } else if (itemName != null && supplierID.length <= 0) {
+            JOptionPane.showMessageDialog(null, "This item does not has supplier. Please contact Inventory Manager.", "Warning", JOptionPane.WARNING_MESSAGE);
+            cleanTF();
         } else {
             JOptionPane.showMessageDialog(null, "Invalid Item No.");
         }

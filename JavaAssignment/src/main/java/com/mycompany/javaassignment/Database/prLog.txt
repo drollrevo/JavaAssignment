@@ -1,0 +1,5 @@
+New PR Created: PR-20241220001,PROD-10001,Samsung TV,SUP-OVS-001,1000,Out of Stock,NA,2024-12-20,Waiting,SM-1001,Waiting,Waiting to Review, 2024-12-20;11:54:36
+Edited PR: PR-20241220001,PROD-10001,Samsung TV,SUP-OVS-001,1000,Out of Stock,NA,2024-12-20,Waiting,SM-1001,Waiting,Waiting to Review -> PR-20241220001,PROD-10001,Samsung TV,SUP-OVS-001,500,Out of Stock,NA,2024-12-20,Waiting,SM-1001,Waiting,Waiting to Review | Timestamp: Fri Dec 20 11:54:54 MYT 2024
+New PR Created: PR-202412200002,PROD-10001,Samsung TV,SUP-OVS-001,50,Scheduled Re-stock,NA,2024-12-20,Waiting,SM-1001,Waiting,Waiting to Review, 2024-12-20;12:04:27
+Edited PR: PR-202412200002,PROD-10001,Samsung TV,SUP-OVS-001,50,Scheduled Re-stock,NA,2024-12-20,Waiting,SM-1001,Waiting,Waiting to Review -> PR-202412200002,PROD-10001,Samsung TV,SUP-OVS-001,100,Scheduled Re-stock,NA,2024-12-20,Waiting,SM-1001,Waiting,Waiting to Review | Timestamp: Fri Dec 20 12:04:51 MYT 2024
+Deleted PR: PR-202412200002,PROD-10001,Samsung TV,SUP-OVS-001,100,Scheduled Re-stock,NA,2024-12-20,Waiting,SM-1001,Waiting,Waiting to Review | Timestamp: Fri Dec 20 12:05:10 MYT 2024

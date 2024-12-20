@@ -18,12 +18,14 @@ public class SalesEntryUI extends javax.swing.JFrame {
         initComponents();
         tableUI();
         jTextField1.setEditable(false);
+        jTextField2.setEditable(false);
         jTextField3.setEditable(false);
         jTextField4.setEditable(false);
         jTextField6.setEditable(false);
         jTextField7.setEditable(false);
         jTextField8.setEditable(false);
         jTextField1.setFocusable(false);
+        jTextField2.setFocusable(false);
         jTextField3.setFocusable(false);
         jTextField4.setFocusable(false);
         jTextField6.setFocusable(false);

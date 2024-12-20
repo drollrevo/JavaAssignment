@@ -57,7 +57,7 @@ public class SalesEntry extends JFrame {
             br.readLine();
             // Read each line from the file            
             while ((line = br.readLine()) != null) {
-                String[] parts = line.split(","); // Assuming CSV format: itemNo,itemName,...
+                String[] parts = line.split(","); // Assuming CSV format: itemNo,itemName,...video
 
                 String currentSalesEntryNo = parts[0].trim();
                 String currentItemNo = parts[1].trim();
@@ -159,7 +159,7 @@ public class SalesEntry extends JFrame {
                 String currentSalesEntryNo = parts[0].trim();
                 int currentQtyAvailable = Integer.parseInt(parts[4].trim());
                 System.out.println(currentSalesEntryNo + " / " + salesEntryNo + " / " + parts[4]);
-                
+
                 // Check if the itemNo matches the current line's itemNo and itemStatus not inactive
                 if (currentSalesEntryNo.equals(salesEntryNo)) {
                     qty = currentQtyAvailable; // Set the itemName if itemNo matches
@@ -293,38 +293,39 @@ public class SalesEntry extends JFrame {
 
         // Read the file content
         try (BufferedReader br = new BufferedReader(new FileReader(salesFile))) {
+            if (inv.reduceStock(itemNo, itemName, (qty - getQty(salesEntryNo)), "SA")) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts.length == 8 && parts[0].trim().equals(salesEntryNo)) {
+                        // If the salesEntryNo matches, edit the line
+                        entryFound = true;
 
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 8 && parts[0].trim().equals(salesEntryNo)) {
-                    // If the salesEntryNo matches, edit the line
-                    entryFound = true;
+                        // Create the updated line with new values
+                        updatedLine = salesEntryNo + "," + itemNo + "," + itemName + "," + price + "," + qty + "," + amount + "," + date + "," + user;
 
-                    // Create the updated line with new values
-                    updatedLine = salesEntryNo + "," + itemNo + "," + itemName + "," + price + "," + qty + "," + amount + "," + date + "," + user;
+                        System.out.println("Halo1" + getQty(salesEntryNo));
+                        System.out.println("Halo2" + qty);
+                        System.out.println("Halo3" + getQty(salesEntryNo) + qty);
 
-                    System.out.println("Halo1" + getQty(salesEntryNo));
-                    System.out.println("Halo2" + qty);
-                    System.out.println("Halo3" + getQty(salesEntryNo) + qty);
-                    inv.reduceStock(itemNo, itemName, (qty - getQty(salesEntryNo)), "SA");
+                        // Add the updated line to the list
+                        lines.add(updatedLine);
 
-                    // Add the updated line to the list
-                    lines.add(updatedLine);
-
-                    // Log the change before adding to the list
-                    try (BufferedWriter logBw = new BufferedWriter(new FileWriter(SALES_LOG_FILENAME, true))) {
-                        logBw.write("Edited SalesEntry: " + line + " -> " + updatedLine + " | Timestamp: " + time.toDateTimeFormat());
-                        logBw.newLine();
-                        logBw.close();
-                    } catch (IOException logException) {
-                        JOptionPane.showMessageDialog(null, "Error logging edited sales entry.");
+                        // Log the change before adding to the list
+                        try (BufferedWriter logBw = new BufferedWriter(new FileWriter(SALES_LOG_FILENAME, true))) {
+                            logBw.write("Edited SalesEntry: " + line + " -> " + updatedLine + " | Timestamp: " + time.toDateTimeFormat());
+                            logBw.newLine();
+                            logBw.close();
+                        } catch (IOException logException) {
+                            JOptionPane.showMessageDialog(null, "Error logging edited sales entry.");
+                        }
+                    } else {
+                        // Add the unchanged line to the list
+                        lines.add(line);
                     }
-                } else {
-                    // Add the unchanged line to the list
-                    lines.add(line);
                 }
             }
+
             br.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error processing SalesEntry.txt.");
@@ -361,7 +362,7 @@ public class SalesEntry extends JFrame {
                 if (parts.length == 8 && parts[0].trim().equals(salesEntryNo)) {
                     // If the salesEntryNo matches, mark it as found and log the deletion
                     entryFound = true;
-                    inv.reduceStock(getItemNo(salesEntryNo), getItemName(salesEntryNo), getQty(salesEntryNo), "SA");
+                    inv.reduceStock(getItemNo(salesEntryNo), getItemName(salesEntryNo), -(getQty(salesEntryNo)), "SA");
 
                     try (BufferedWriter logBw = new BufferedWriter(new FileWriter(SALES_LOG_FILENAME, true))) {
                         logBw.write("Deleted Entry: " + line + " | Timestamp: " + time.toDateTimeFormat());

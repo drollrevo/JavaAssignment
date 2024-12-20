@@ -131,24 +131,25 @@ public class PurchaseRequisition {
 
     /*Methods*/
     public String newPRNo() {
-        String newPRNo = null;
+        String prefix = "PR-" + time.getDateFormat();
+        String newPRNo = prefix + "001";
 
         try (BufferedReader br = new BufferedReader(new FileReader(PR_FILENAME))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts[0].startsWith("PR-")) {
-                    String prefix = "PR-" + time.getDateFormat();
+
                     System.out.println(Integer.parseInt(parts[0].substring(parts[0].length() - 4)));
                     if (parts[0].startsWith(prefix)) {
                         // Extract the last three digits
                         newPRNo = prefix + String.format("%04d", (Integer.parseInt(parts[0].substring(parts[0].length() - 4)) + 1));
-                    }else {
+                    } else {
                         newPRNo = prefix + "001";
                     }
                 }
             }
-            
+
             return newPRNo;
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading pr.txt: " + e.getMessage());

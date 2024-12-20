@@ -1,0 +1,25 @@
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 50 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:20:02
+ItemNo: PROD-10002, ItemName: Vacuum, Action: Reduced 500 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:20:25
+ItemNo: PROD-10003, ItemName: Panasonic Fridge, Action: Reduced 30 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:20:42
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 50 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:20:52
+ItemNo: PROD-10004, ItemName: Xiaomi Aircondition, Action: Reduced 0 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:22:54
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 30 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:27:13
+ItemNo: PROD-10002, ItemName: Vacuum, Action: Reduced -480 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:28:33
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 40 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:33:58
+ItemNo: PROD-10004, ItemName: Xiaomi Aircondition, Action: Reduced 10 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:34:53
+ItemNo: PROD-10004, ItemName: Xiaomi Aircondition, Action: Reduced 10 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:34:54
+ItemNo: PROD-10004, ItemName: Xiaomi Aircondition, Action: Reduced -10 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:35:13
+ItemNo: PROD-10004, ItemName: Xiaomi Aircondition, Action: Reduced -10 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:35:14
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 60 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:38:22
+ItemNo: PROD-10004, ItemName: Xiaomi Aircondition, Action: Reduced 10 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:39:08
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced -60 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:40:57
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 40 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:44:35
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 10 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:45:30
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced -50 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:45:46
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 10 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:51:23
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 20 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:52:06
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 10 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:52:18
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced -40 AvailableStock, User: SM-1001, DateTime: 2024-12-20;11:52:25
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 40 AvailableStock, User: SM-1001, DateTime: 2024-12-20;12:01:21
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced 15 AvailableStock, User: SM-1001, DateTime: 2024-12-20;12:02:23
+ItemNo: PROD-10001, ItemName: Samsung TV, Action: Reduced -55 AvailableStock, User: SM-1001, DateTime: 2024-12-20;12:02:34

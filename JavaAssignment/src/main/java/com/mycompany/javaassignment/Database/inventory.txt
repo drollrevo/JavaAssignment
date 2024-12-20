@@ -1,5 +1,5 @@
-PROD-10001, Samsung TV, 110, 0, 110
-PROD-10002, Vacuum, 2010, 0, 2010
-PROD-10003, Panasonic Fridge, 240, 0, 240
-PROD-10004, Xiaomi Aircondition, 2, 0, 2
+PROD-10001, Samsung TV, 80, 0, 80
+PROD-10002, Vacuum, 1990, 0, 1990
+PROD-10003, Panasonic Fridge, 210, 0, 210
+PROD-10004, Xiaomi Aircondition, 42, 0, 42
 PROD-10005, Intel Laptop, 0, 0, 0
